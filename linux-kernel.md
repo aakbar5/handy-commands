@@ -18,5 +18,5 @@ sudo make ARCH=arm INSTALL_MOD_PATH=<path to root of file system> modules_instal
 
 <a name="dtc"></a>
 # Device Tree handling
-- [Convert DTS to DTB]: https://gist.github.com/aakbar5/60e432b4e16843bef8656de88ab1e1b7
-- [Convert DTB to DTS]: https://gist.github.com/aakbar5/60e432b4e16843bef8656de88ab1e1b7
+- [Convert DTS to DTB](https://gist.github.com/aakbar5/60e432b4e16843bef8656de88ab1e1b7)
+- [Convert DTB to DTS](https://gist.github.com/aakbar5/60e432b4e16843bef8656de88ab1e1b7)
