@@ -19,26 +19,26 @@
 
 <a name="docker"></a>
 ## Docker
-`docker --version` - print docker version
-`docker version` - print docker version
-`docker info` - print detailed info docker installation
-`docker run hello-world` - test docker installation
+- `docker --version` - print docker version
+- `docker version` - print docker version
+- `docker info` - print detailed info docker installation
+- `docker run hello-world` - test docker installation
 
 <a name="images"></a>
 ## Docker images
-`docker image ls` - List Docker images
-`docker rmi <image-name_OR_image-id-number>` - Remove a specific docker image
-`docker images -f dangling=true` - Show dangling* docker image
-`docker images purge` - Remove dangling docker images
+- `docker image ls` - List Docker images
+- `docker rmi <image-name_OR_image-id-number>` - Remove a specific docker image
+- `docker images -f dangling=true` - Show dangling1 docker image
+- `docker images purge` - Remove dangling docker images
 
-* Docker images consist of multiple layers. Dangling images are layers that have no relationship to any tagged images. They no longer serve a purpose and consume disk space.
+1 Docker images consist of multiple layers. Dangling images are layers that have no relationship to any tagged images. They no longer serve a purpose and consume disk space.
 
 <a name="containers"></a>
 ## Docker containers
-`docker container ls` - Show running containers
-`docker container ls --all` - List all container
-`docker container ls --all --quiet` - List only IDs of all containers
-`docker rm <docker-image_OR_docker-id-number>` - Remove a specific container
+- `docker container ls` - Show running containers
+- `docker container ls --all` - List all container
+- `docker container ls --all --quiet` - List only IDs of all containers
+- `docker rm <docker-image_OR_docker-id-number>` - Remove a specific container
 
 <a name="create_a_docker_img"></a>
 ## Create a docker image & container
