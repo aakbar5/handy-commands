@@ -3,7 +3,7 @@
 - [DTC](#dtc)
 
 <a name="kernel"></a>
-# Kernel build
+## Kernel build
 ```
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- distclean
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- <defconfig>
@@ -17,6 +17,6 @@ sudo make ARCH=arm INSTALL_MOD_PATH=<path to root of file system> modules_instal
 ```
 
 <a name="dtc"></a>
-# Device Tree handling
+## Device Tree handling
 - [Convert DTS to DTB](https://gist.github.com/aakbar5/60e432b4e16843bef8656de88ab1e1b7)
 - [Convert DTB to DTS](https://gist.github.com/aakbar5/60e432b4e16843bef8656de88ab1e1b7)
