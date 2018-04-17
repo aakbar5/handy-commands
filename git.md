@@ -13,11 +13,11 @@
 ## Log viewing
 - Simple view
 `git log --graph --decorate --abbrev-commit --pretty=oneline`
-![git_simple_log][resources/git_simple_log.png]
+![git_simple_log](resources/git_simple_log.png)
 
 - Log with date/time + author
 `git log --graph --decorate --abbrev-commit --pretty=format:"%C(cyan)%h %C(yellow)%ad%Cred%d %Cgreen [%an:%ae] %Creset%s" --decorate --date=iso`
-![git_date_log][resources/git_date_log.png]
+![git_date_log](resources/git_date_log.png)
 
 <a name="tags"></a>
 ## Log viewing
