@@ -8,6 +8,10 @@
 - [Copy file to/from from container](#copy_file)
 - [Copy folder to/from from container](#copy_folder)
 - [Container backup](#container_backup)
+- [Workflow # 1](#workflow_1)
+- [Workflow # 2](#workflow_2)
+- [Workflow # 3](#workflow_3)
+- [Workflow # 4](#workflow_4)
 
 <a name="background"></a>
 ## Background
@@ -51,7 +55,7 @@
 FROM ubuntu:14.04
 ```
 
-- `docker build -t image-name .` - Build a docker image
+- `docker build --tag image-name:tag .` - Build a docker image
 - `docker create --interactive --tty --name container-name image-name bash` - Create a docker container from image; It's entrypoint point is set to bash shell
 - `docker start --interactive --attach container-name` - Start container and log in to container
 - `docker run --security-opt seccomp:unconfined --interactive image-name bash` - Create/attach to a container with security relaxation
@@ -63,9 +67,7 @@ FROM ubuntu:14.04
 - `docker stop container-name` - Stop a docker
 - `docker rm $(docker container ls --all --quiet)` - Delete all containers
 - `docker rmi $(docker images --quiet)` - Delete all images
-- `docker exec --tty --interactive container-name /bin/bash` - This command will let you land in docker container.
-- `docker exec --interactive container-name /bin/bash -c "export COLUMNS=tput cols; export LINES=tput lines; exec bash"` - This command will let you land in docker container without tty width restriction.
-- `docker run --detach --interactive --name container-name project` - Run docker container using above image
+- `docker run --interactive --detach --name container-name project` - Run docker container using above image
 - `docker tag <old-repo-name:old-tag-name> <new-repo-name:new-tag-name>` - Rename docker image
 - `docker rename <old-name> <new-name>` - Rename docker container
 
@@ -84,8 +86,47 @@ docker cp container-name:/folder folder
 ```
 
 <a name="container_backup"></a>
-##  Container backup
+## Container backup
 - `docker container ls` - Check container is running
 - `docker commit --pause container-name image-name` - Issue commit command to save state of running container to an image
-- `docker save -o image-name-backup.tar image-name` - Create backup of the docker image
+- `docker save image-name --output image-name-backup.tar` - Create backup of the docker image
 - `docker load --input image-name-backup.tar` - Restore docker image backup
+
+<a name="workflow_1"></a>
+## Workflow # 1
+Create a container from existing backup image.
+
+- docker load   -- `docker load --input image-name-backup.tar`
+- docker create -- `docker create --interactive --tty --name container-name image-name bash`
+- docker start  -- `docker start --interactive --attach container-name`
+
+<a name="workflow_2"></a>
+## Workflow # 2
+Rename a docker image.
+
+- docker tag -- `docker tag old_repo:tag new_repo:new_tag`
+- docker remove image -- `docker rmi old_repo`
+
+<a name="workflow_3"></a>
+## Workflow # 3
+Backup a docker container.
+
+- docker commit -- `docker commit --pause container-name image-name`
+- docker save   -- `docker save --output image-name-backup.tar image-name`
+
+<a name="workflow_4"></a>
+## Workflow # 4
+Attach multiple shell to a running container.
+
+- `docker exec --interactive container-name bash`
+
+OR
+
+- `docker exec --interactive --tty container-name /bin/bash -c "export TERM=xterm; exec bash"`
+ - Shell without tty width restriction.
+
+:information_source:
+Put following in Dockerfile to have shell without width restriction.
+```
+echo "export TERM=xterm" >> /etc/bash.bashrc
+```
