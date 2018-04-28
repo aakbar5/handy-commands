@@ -70,6 +70,9 @@ FROM ubuntu:14.04
 - `docker run --interactive --detach --name container-name project` - Run docker container using above image
 - `docker tag <old-repo-name:old-tag-name> <new-repo-name:new-tag-name>` - Rename docker image
 - `docker rename <old-name> <new-name>` - Rename docker container
+- `docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs docker rm` - Remove docker which are in exit state
+- `dockviz images -t` - Docker image tree visualization
+- `dockviz images -s` - Docker image flat visualization
 
 <a name="copy_file"></a>
 ## Copy file to/from from container
