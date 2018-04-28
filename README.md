@@ -7,6 +7,7 @@ This repo contains handy commands of daily use.
 - [Linux kernel](linux-kernel.md)
 - [Yocto](yocto.md)
 - [Docker](docker.md)
+- [Python](python.md)
 
 # Content Contributors
 Feel free to send commands or pull requests.
