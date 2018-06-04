@@ -12,6 +12,7 @@
 - [Workflow # 2](#workflow_2)
 - [Workflow # 3](#workflow_3)
 - [Workflow # 4](#workflow_4)
+- [Untested commands](#untested_commands)
 
 <a name="background"></a>
 ## Background
@@ -20,6 +21,7 @@
 - Docker image: It contains an OS + extra packages + applications.
 - Docker container: A running instance of the docker image. Multiple contains can use the same docker image.
 - Docker is not end of world, there are alot of others players (LXD, OpenVZ, OpenVZ, Linux VServer) are too in the market.
+- Union file systems implement a union mount and operate by creating layers. Docker uses union file systems in conjunction with copy-on-write techniques to provide the building blocks for containers, making them very lightweight and fast.
 
 <a name="docker"></a>
 ## Docker
@@ -132,4 +134,18 @@ OR
 Put following in Dockerfile to have shell without width restriction.
 ```
 echo "export TERM=xterm" >> /etc/bash.bashrc
+```
+
+<a name="untested_commands"></a>
+## Untested commands
+
+- Map host to container
+```
+ls "/proc/$(docker inspect --format {{.State.Pid}} container-name)/root"
+bindfs --map=root/<MY_USER> "/proc/$(docker inspect --format {{.State.Pid}} <container-id>)/root" "/home/<MY_USER>/<SOME_FOLDER>"
+```
+
+- Give DISPLAY to container to run GUI
+```
+docker run -ti -e DISPLAY=$DISPLAY blah-image blah-command
 ```
