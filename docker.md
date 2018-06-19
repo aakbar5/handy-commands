@@ -61,6 +61,7 @@ FROM ubuntu:14.04
 - `docker create --interactive --tty --name container-name image-name bash` - Create a docker container from image; It's entrypoint point is set to bash shell
 - `docker start --interactive --attach container-name` - Start container and log in to container
 - `docker run --security-opt seccomp:unconfined --interactive image-name bash` - Create/attach to a container with security relaxation
+- `docker run --interactive --tty --volume /path/to/folder/on/host:/path/to/folder/in/container container-name bash` - Run/Attach a volume to a container
 - `exit`-- Exit from the docker container
 - `docker commit container-name` -  Command to save modified contents back to image otherwise on stopping container these will changes will be lost
 
