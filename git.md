@@ -4,6 +4,7 @@
 - [Tags](#tags)
 - [Repo clean](#repo_cleanup)
 - [Setup SSH keys](#ssh_keys)
+- [Remove remote branch](#remove_remote_branch)
 
 <a name="intro"></a>
 ## Introduction
@@ -34,3 +35,14 @@ git stash clear
 <a name="ssh_keys"></a>
 ## Setup SSH keys
 - [Setup SSH keys](https://help.github.com/articles/connecting-to-github-with-ssh/)
+
+<a name="remove_remote_branch"></a>
+## Remove remote branch
+```
+git remote rm destination
+
+cd into/cloned/fork-repo
+git status
+git fetch upstream
+git pull upstream master
+```
