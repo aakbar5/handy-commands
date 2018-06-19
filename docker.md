@@ -13,6 +13,7 @@
 - [Workflow # 3](#workflow_3)
 - [Workflow # 4](#workflow_4)
 - [Untested commands](#untested_commands)
+- [Errors](#errors)
 
 <a name="background"></a>
 ## Background
@@ -149,4 +150,17 @@ bindfs --map=root/<MY_USER> "/proc/$(docker inspect --format {{.State.Pid}} <con
 - Give DISPLAY to container to run GUI
 ```
 docker run -ti -e DISPLAY=$DISPLAY blah-image blah-command
+```
+
+<a name="errors"></a>
+## Errors
+
+- Error # 1
+```
+docker: Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post http://%2Fvar%2Frun%2Fdocker.sock/v1.26/containers/create: dial unix /var/run/docker.sock: connect: permission denied.
+See 'docker run --help'.
+```
+-- Solution
+```
+sudo usermod -a -G docker $USER
 ```
