@@ -8,6 +8,7 @@
 - [Copy file to/from from container](#copy_file)
 - [Copy folder to/from from container](#copy_folder)
 - [Container backup](#container_backup)
+- [Registry -- push](#registry_push)
 - [Workflow # 1](#workflow_1)
 - [Workflow # 2](#workflow_2)
 - [Workflow # 3](#workflow_3)
@@ -55,14 +56,14 @@
 - Put commands in Dockerfile
 ```
 # Set the base image
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 ```
 
 - `docker build --tag image-name:tag .` - Build a docker image
-- `docker create --interactive --tty --name container-name image-name bash` - Create a docker container from image; It's entrypoint point is set to bash shell
-- `docker start --interactive --attach container-name` - Start container and log in to container
+- `docker create --interactive --tty --name container-name image-name bash` - Create a docker container from image; It's entry point point is set to bash shell
+- `docker start --interactive --attach container-name` - Re-start container which previsouly exited and open interactive shell
 - `docker run --security-opt seccomp:unconfined --interactive image-name bash` - Create/attach to a container with security relaxation
-- `docker run --interactive --tty --volume /path/to/folder/on/host:/path/to/folder/in/container container-name bash` - Run/Attach a volume to a container
+- `docker run --interactive --tty --volume /path/to/folder/on/host:/path/to/folder/in/container image-name bash` - Create a container from image and attach a volume to it
 - `exit`-- Exit from the docker container
 - `docker commit container-name` -  Command to save modified contents back to image otherwise on stopping container these will changes will be lost
 
@@ -71,7 +72,8 @@ FROM ubuntu:14.04
 - `docker stop container-name` - Stop a docker
 - `docker rm $(docker container ls --all --quiet)` - Delete all containers
 - `docker rmi $(docker images --quiet)` - Delete all images
-- `docker run --interactive --detach --name container-name project` - Run docker container using above image
+- `docker rmi $(docker images --quiet --filter "dangling=true")` - Delete dangling images
+- `docker run --interactive --detach --name container-name image-name` - Run docker container using above image
 - `docker tag <old-repo-name:old-tag-name> <new-repo-name:new-tag-name>` - Rename docker image
 - `docker rename <old-name> <new-name>` - Rename docker container
 - `docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs docker rm` - Remove docker which are in exit state
@@ -98,6 +100,14 @@ docker cp container-name:/folder folder
 - `docker commit --pause container-name image-name` - Issue commit command to save state of running container to an image
 - `docker save image-name --output image-name-backup.tar` - Create backup of the docker image
 - `docker load --input image-name-backup.tar` - Restore docker image backup
+
+<a name="registry_push"></a>
+## Registry -- push
+- To push image to docker registry, you need to crate a tag against that docker registry:
+```
+docker tag <image-name> <docker-registry-host>/<image-name>
+docker push <docker-registry-host>/<image-name>
+```
 
 <a name="workflow_1"></a>
 ## Workflow # 1
