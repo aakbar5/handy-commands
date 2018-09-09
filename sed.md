@@ -22,11 +22,15 @@
 ## Useful commands
 
 ### Grep lines b/w two strings
-`sed -n '/test1/,/test2/p' file.txt`
+```
+sed -n '/test1/,/test2/p' file.txt
+```
 - In found lines search strings will be included.
 
 - To exclude search strings
-`sed -n '/test1/,/test2/{/test1/b;/test2/b;p}' file.txt`
+```
+sed -n '/test1/,/test2/{/test1/b;/test2/b;p}' file.txt
+```
 
 
 ### Replace a line in a file
@@ -43,8 +47,8 @@ sed -i 's/original/new/g' file.txt
 ```
 sed -i "s/$original/new/g" file.txt
 ```
-- NOTE: " is used instead of '
-- NOTE: $original means env variable is used
+- NOTE: `"` is used instead of `'`.
+- NOTE: `$original` means env variable is used.
 
 `$original` can be used with [Bash parameter expansion](https://www.gnu.org/software/bash/manual/bash.html#Shell-Parameter-Expansion) trick which allows you to use default value if env variable is not set. For example
 ```
@@ -52,7 +56,7 @@ original="${ORIGINAL_ENV:-default_value}"
 ```
 Let's assume `ORIGINAL_ENV` is not set, original variable will end up with having `default_value`.
 
-### Replace all occurrences of the string having / (forward-slash)
+### Replace all occurrences of the string having `/` (forward-slash)
 ```
 sed -i "s|$original|new|g" file.txt
 ```
