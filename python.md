@@ -1,6 +1,7 @@
 # Table of Contents
 - [Commands](#commands)
 - [Virtual Env](#virutalenv)
+- [Pip upgrade](#pip_upgrade)
 - [Errors](#errors)
 
 <a name="commands"></a>
@@ -19,6 +20,10 @@ $ source my_project/bin/activate
 $ pip freeze > requirements.txt
 $ dactivate
 ```
+<a name="pip_upgrade"></a>
+## Pip upgrade
+- `pip install --upgrade pip` -- To upgrade pip; not recommended, I have always found pip broken afterwards
+- `python -m pip install --upgrade pip` -- Recommended command to upgrade pip.
 
 <a name="errors"></a>
 ## Errors
