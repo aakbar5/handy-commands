@@ -60,3 +60,13 @@ Let's assume `ORIGINAL_ENV` is not set, original variable will end up with havin
 ```
 sed -i "s|$original|new|g" file.txt
 ```
+
+### Replace `,` with newline
+```
+echo "a,b" | sed -e $'s/,/\\\n/g'
+```
+
+### Remove lines starting with string
+```
+sed -i '/^string/d' file.txt
+```
