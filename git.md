@@ -9,6 +9,7 @@
 - [Repo config](#repo_config)
 - [Stash](#stash)
 - [Setup SSH keys](#ssh_keys)
+- [Misc](#mic)
 
 <a name="log_viewing"></a>
 ## Log viewing
@@ -116,10 +117,24 @@ git config user.email "<user-email-address>"
 - Temporarily saves changes of half-done work
 
 - `git stash` - Temporarily stores all modified tracked files
-- `git stash pop` - Restores the most recently stashed files
-- `git stash list` - Lists all stashed change sets
-- `$ git stash drop` - Discards the most recently stashed change sets
+- `git stash -u` - Temporarily stores all modified tracked files + includes new files
+- `git stash -a` - Temporarily stores all modified tracked files + includes ignore files too
+- `git stash list` - Show list of stashes
+- `git stash pop` - Restore changes from the most recently stashed
+- `git stash pop stash@{1}` - Restore a specific stash and remove it from the list
+- `git stash drop` - Clear the most recently stashed
+- `git stash drop stash@{1}` - Clear a specific stash
+- `git stash show` - Summary of the changes
+- `git stash show -p` - Summary of the changes in patch format
+- `git stash branch new-branch-name stash@{1}` - Create branch from git stash
+- `git stash apply` - Apply stash changes
+- `git stash clear` - Clear all stashes
+- `git stash save "add style to our site"` - Save stash with comments
 
 <a name="ssh_keys"></a>
 ## Setup SSH keys
 - [Setup SSH keys](https://help.github.com/articles/connecting-to-github-with-ssh/)
+
+<a name="misc"></a>
+## Misc
+- `git log starthash..endhash --pretty=oneline | wc -l` - Count number of commits b/w two commits
