@@ -32,7 +32,6 @@ sed -n '/test1/,/test2/p' file.txt
 sed -n '/test1/,/test2/{/test1/b;/test2/b;p}' file.txt
 ```
 
-
 ### Replace a line in a file
 ```
 sed -i '/original/c\new' file.txt
