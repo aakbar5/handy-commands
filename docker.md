@@ -172,5 +172,7 @@ See 'docker run --help'.
 ```
 -- Solution
 ```
+sudo groupadd docker
 sudo usermod -a -G docker $USER
 ```
+Logout and login again to use docker without sudo.
