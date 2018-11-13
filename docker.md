@@ -35,6 +35,7 @@
 <a name="images"></a>
 ## Docker images
 - `docker image ls` - List Docker images
+- `docker image ls --digests` - List docker images with sha256 sum
 - `docker rmi <image-name_OR_image-id-number>` - Remove a specific docker image
 - `docker images -f dangling=true` - Show dangling docker image
 - `docker images purge` - Remove dangling docker images
