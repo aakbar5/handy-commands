@@ -62,7 +62,22 @@ sed -i "s|$original|new|g" file.txt
 
 ### Replace `,` with newline
 ```
-echo "a,b" | sed -e $'s/,/\\\n/g'
+echo "a,b" | sed 's/,/\n/g'
+```
+
+### Replace `/` with newline
+```
+echo "a/b" | sed 's/\//\n/g'
+```
+
+### Replace ` ` (space) with newline
+```
+echo "a b" | sed 's/\s/\n/g'
+```
+### # Replace one or more space(s) with newline
+```
+echo "a b" | sed 's/\s\+/\n/g'
+echo "a    b" | sed 's/\s\+/\n/g'
 ```
 
 ### Remove lines starting with string
