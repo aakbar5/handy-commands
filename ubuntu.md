@@ -14,6 +14,7 @@
 - `apt-rdepends -r python3-pip` - Show recursive dependency listings of the package
 - `cat /proc/cpuinfo  | egrep "(flags|model name|vendor)" | sort | uniq -c` - Get CPU flag detection
 - `mount -o remount rw /` - Remount / path with read-write access
+- `echo 'USER_NAME ALL=(ALL:ALL) ALL' | sudo EDITOR='tee -a' visudo` - Add a user to visudo/suderos
 
 <a name="network"></a>
 ## Setup IP Address
