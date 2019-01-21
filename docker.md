@@ -6,7 +6,7 @@
 - [Container inspection](#inspect)
 - [Copy file to/from from container](#copy_file)
 - [Copy folder to/from from container](#copy_folder)
-- [Container backup](#container_backup)
+- [Image backup](#image_backup)
 - [Registry -- push](#registry_push)
 - [Extract container info](#extract_container_info)
 - [Workflow # 1](#workflow_1)
@@ -107,13 +107,13 @@ docker cp folder container-name:/folder
 docker cp container-name:/folder folder
 ```
 
-<a name="container_backup"></a>
-## Container backup
+<a name="image_backup"></a>
+## Image backup
 
-- `docker container ls` - Check container is running
-- `docker commit --pause container-name image-name` - Issue commit command to save state of running container to an image
 - `docker save image-name --output image-name-backup.tar` - Create backup of the docker image
 - `docker load --input image-name-backup.tar` - Restore docker image backup
+- `docker save image-name | gzip > image-name-backup.tar.gz` - Create backup of the docker image and compress it
+- `gzcat image-name-backup.tar.gz | docker load` - Restore compressed docker image
 
 <a name="registry_push"></a>
 ## Registry -- push
@@ -170,8 +170,11 @@ Rename a docker image.
 
 Backup a docker container.
 
-- docker commit -- `docker commit --pause container-name image-name`
-- docker save   -- `docker save --output image-name-backup.tar image-name`
+- `docker container ls` - Check container is running
+- `docker commit --pause container-name image-name` - Issue commit command to save state of running container to an image
+- `docker save --output image-name-backup.tar image-name` - Save docker image to .tar file.
+
+`NOTE: docker export command can also used to save running/paused container.`
 
 <a name="workflow_5"></a>
 ## Workflow # 5
