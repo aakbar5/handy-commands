@@ -11,7 +11,7 @@
 - `pip list --outdated --format=freeze` - show list of outdated installed packages
 - `pip show <pip-package-name>` -- Show info related a pip package
 - `pip install --upgrade <pip-package-name>` - upgrade a package
-- `pip install --download /tmp/pip_wheels -r requirements.txt` - Download specified wheels in a directory
+- `pip download -d /tmp/pip_wheels -r requirements.txt` - Download specified wheels in a directory
 - `pip install --no-cache-dir --find-links=/tmp/pip_wheels -r requirements.txt` - Install wheels from the locally directory before fetching it from PyPI repo + No cache the wheel.
 
 <a name="virutalenv"></a>
