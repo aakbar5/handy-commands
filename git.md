@@ -276,3 +276,19 @@ git ls-files . --exclude-standard --others
 ```
 git ls-files   --exclude-standard --others --ignored
 ```
+
+- Remove a file from history
+
+Becareful: It will change git hash values.
+
+```
+git filter-branch -f --index-filter "git rm -rf --cached --ignore-unmatch path/to/file-or-folder/to/be/removed" HEAD
+
+# Remove backup
+git update-ref -d refs/original/refs/heads/master
+
+# Once happy with removal, repackage git repo
+git for-each-ref --format='delete %(refname)' refs/original | git update-ref --stdin
+git reflog expire --expire=now --all
+git gc --prune=now
+```
