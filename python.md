@@ -7,12 +7,24 @@
 <a name="commands"></a>
 ## Commands
 
-- `pip list` -- show list of installed packages
-- `pip list --outdated --format=freeze` - show list of outdated installed packages
+- `pip list` -- Show list of installed packages
+- `pip list --outdated --format=freeze` -- Show list of outdated installed packages
 - `pip show <pip-package-name>` -- Show info related a pip package
-- `pip install --upgrade <pip-package-name>` - upgrade a package
-- `pip download -d /tmp/pip_wheels -r requirements.txt` - Download specified wheels in a directory
-- `pip install --no-cache-dir --find-links=/tmp/pip_wheels -r requirements.txt` - Install wheels from the locally directory before fetching it from PyPI repo + No cache the wheel.
+- `pip install --upgrade <pip-package-name>` -- Upgrade a package
+- `pip install "package>=0.2,<0.3"` -- Install a specific version of pip package
+- `pip download -d /tmp/pip_wheels -r requirements.txt` -- Download specified wheels in a directory
+- `pip install --no-cache-dir --find-links=/tmp/pip_wheels -r requirements.txt` -- Install wheels from the locally directory before fetching it from PyPI repo + No cache the wheel.
+- `python-config --prefix` -- Python installation folder
+- `python-config --exec-prefix` -- Python installation folder
+- `python-config --includes` -- Show python includes folders with -I
+- `python-config --libs` -- Show python libraries
+- `python-config --cflags` -- Show CFLAGS used by Python
+- `python-config --ldflags` -- Show LDFLAGS used by Python
+- `python-config --extension-suffix` -- Show extension of python libs
+- `python-config --configdir` -- Show config directory of python
+- `python -m site` -- System wide python installation folder
+- `python -m site --user-site` -- Use specific python isntallation folder
+- `python -c "import site; print(site.getsitepackages())"` -- Get site package folders in python
 
 <a name="virutalenv"></a>
 ## Virtual Env
