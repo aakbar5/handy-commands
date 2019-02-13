@@ -74,10 +74,17 @@ echo "a/b" | sed 's/\//\n/g'
 ```
 echo "a b" | sed 's/\s/\n/g'
 ```
-### # Replace one or more space(s) with newline
+
+### Replace one or more space(s) with newline
 ```
 echo "a b" | sed 's/\s\+/\n/g'
 echo "a    b" | sed 's/\s\+/\n/g'
+```
+
+### Replace leading spaces or tabs
+```
+echo "    a b" | sed -e 's/^[ \t]*//'
+echo "		a b" | sed -e 's/^[ \t]*//'
 ```
 
 ### Remove lines starting with string
