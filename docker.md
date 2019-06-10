@@ -181,11 +181,11 @@ Backup a docker container.
 
 Attach multiple shell to a running container.
 
-- `docker exec --interactive container-name bash`
+- `docker exec --interactive --tty container-id bash`
 
 OR
 
-- `docker exec --interactive --tty container-name /bin/bash -c "export TERM=xterm; exec bash"`
+- `docker exec --interactive --tty container-id /bin/bash -c "export TERM=xterm; exec bash"`
  - Shell without tty width restriction.
 
 :information_source:
