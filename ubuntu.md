@@ -41,28 +41,28 @@ ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'
 
 ### Convert MOV into MP4
 ```
-avconv -i input.mov -codec copy output.mp4
+ffmpeg -i input.mov -codec copy output.mp4
 ```
 
 ### Change speed of the video
 ```
-avconv -i input.mp4 -vf "setpts=speed_multiplier*PTS" output.mp4
+ffmpeg -i input.mp4 -vf "setpts=speed_multiplier*PTS" output.mp4
 ```
 - To slow down your video, you have to use a multiplier greater than 1.
 
 ```
-avconv -i input.mp4 -vf "setpts=PTS/factor" output.mp4
+ffmpeg -i input.mp4 -vf "setpts=PTS/factor" output.mp4
 ```
 - Speed up the video by using x factor.
 
 ### Extract audio track
 - MP4 to mp3
 ```
-avconv -i input.mp4 -vn -acodec copy audio.aac
+ffmpeg -i input.mp4 -vn -acodec copy audio.aac
 ```
 ```
-avconv -i input.mp4 -vn -f mp3 output.mp3
-for file in *.mp4; do avconv -i "${file%%.*}.mp4" -vn -f mp3 "${file%%.*}.mp3"; done
+ffmpeg -i input.mp4 -vn -f mp3 output.mp3
+for file in *.mp4; do ffmpeg -i "${file%%.*}.mp4" -vn -f mp3 "${file%%.*}.mp3"; done
 ```
 
 ### Merge two MP4 files
@@ -72,24 +72,24 @@ ffmpeg -i concat:"input1.mp4|input2.mp4" output.mp4
 
 ### Mute the video
 ```
-avconv -i input.mp4 -an output.mp4
+ffmpeg -i input.mp4 -an output.mp4
 ```
 
 ### Rotate a video
 ```
-avconv -i input.mp4 -vf transpose=1 output.mp4
+ffmpeg -i input.mp4 -vf transpose=1 output.mp4
 ```
 
 ## Reduce video size
 ```
-avconv -i input.mp4 -c:v libx264 -crf 18 -c:a copy output.mp4
+ffmpeg -i input.mp4 -c:v libx264 -crf 18 -c:a copy output.mp4
 ```
 - CRF @ https://slhck.info/video/2017/02/24/crf-guide.html
 - Play with it to see quality vs size
 
 ### Reduce audio file size
 ```
-avconv -i old.mp3 -acodec libmp3lame -ac 2 -ab 64k -ar 44100 new-1.mp3
+ffmpeg -i old.mp3 -acodec libmp3lame -ac 2 -ab 64k -ar 44100 new-1.mp3
 ```
 
 ### Convert JPG to PNG
