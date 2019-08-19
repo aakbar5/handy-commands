@@ -10,7 +10,8 @@
 - [Stash](#stash)
 - [Submodule](#submodule)
 - [Setup SSH keys](#ssh_keys)
-- [Misc](#mic)
+- [Repo cleanup](#cleanup)
+- [Misc](#misc)
 
 <a name="repo_config"></a>
 ## Repo config
@@ -46,8 +47,16 @@ git stash clear
 
 <a name="tags"></a>
 ## Tags
+- `git tag <tag_name>` - Create a tag
+- `git tag -d <tag_name>` - Delete a tag
 - `git tag -l | sort -V` - See tags in the sort order
 - `git push --tags` - Push tags to remote
+- Rename an old tag
+```
+git tag <new_tag_name> <old_tag_name>
+git tag -d <old_tag_name>
+git push origin :refs/tags/<old_tag_name>
+```
 
 <a name="branches"></a>
 ## Branches
@@ -66,6 +75,11 @@ git branch -d {the_local_branch}
 - Remove remote branch
 ```
 git push origin --delete {the_remote_branch}
+```
+
+- Push a new branch and set local branch to track the new remote
+```
+git push --set-upstream origin new_branch
 ```
 
 <a name="remote_tracking"></a>
@@ -124,6 +138,16 @@ git pull <remote> <branch>
 - Push local commits to remote
 ```
 git push <remote> <branch>
+```
+
+- Push a specific commit id to remote
+```
+git push origin <commit_id_has>:master
+```
+
+- Push everything
+```
+git push --all
 ```
 
 <a name="stash"></a>
@@ -259,6 +283,22 @@ git config user.name "git-hub-user-name"
 git config user.email "git-hub-email-visible-to-others"
 ```
 
+<a name="cleanup"></a>
+## Repo cleanup
+
+```
+git reflog expire --expire=now --all
+git gc --prune=now
+```
+  -or-
+```
+git fsck --unreachable
+git reflog expire --expire=0 --all
+git repack -a -d -l
+git prune
+git gc --aggressive --prune=now
+```
+
 <a name="misc"></a>
 ## Misc
 
@@ -274,12 +314,10 @@ git ls-files . --exclude-standard --others
 
 - List ignored files
 ```
-git ls-files   --exclude-standard --others --ignored
+git ls-files --exclude-standard --others --ignored
 ```
 
-- Remove a file from history
-
-Becareful: It will change git hash values.
+- Remove a file from history (Becareful: It will change git hash values.)
 
 ```
 git filter-branch -f --index-filter "git rm -rf --cached --ignore-unmatch path/to/file-or-folder/to/be/removed" HEAD
@@ -292,3 +330,9 @@ git for-each-ref --format='delete %(refname)' refs/original | git update-ref --s
 git reflog expire --expire=now --all
 git gc --prune=now
 ```
+- Revert to a commit in the history
+`git reflog` - Find your commit
+`git reset HEAD@{1}` - Revert to the commit assuming it is HEAD@{1}.
+
+- List only deleted items for commit
+  `git ls-files --deleted -z | xargs -0 git rm`
