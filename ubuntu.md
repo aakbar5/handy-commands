@@ -1,13 +1,14 @@
 # Ubuntu
 - [General commands](#general)
-- [Setup IP Address](#network)
+- [Find commands](#find)
+- [Network](#network)
 - [Audio/Video Conversion](#av_conversion)
 
 <a name="general"></a>
 ## General commands
 
 - `dpkg --print-foreign-architectures` - Get foreign architecture
-- `dpkg --print-architecture` - Get native architecture 
+- `dpkg --print-architecture` - Get native architecture
 - `cat /var/lib/dpkg/arch` - Available architecture
 - `sudo add-apt-repository ppa:graphics-drivers/ppa` - Add a PPA to pull new packages
 - `sudo apt-add-repository --remove ppa:graphics-drivers/ppa` - Remove a PPA
@@ -21,17 +22,58 @@
 - `usermod -g GROUP_NAME USER_NAME` - Change group for a user
 - `sudo find /path/to/search -group GROUP_NAME -d type d` - Find out folders belong to a specific group
 
+<a name="find"></a>
+## Find Commands
+
+- Find a file of specific name
+```
+find . -type f -name "postgis"
+```
+
+- Find a file with a specific name (with loop and custom command)
+```
+for i in `find . -name ".mk"`; do echo $i; done
+for i in `find . -name ".mk"`; do git add -f $i; done
+```
+
+- Find all files
+```
+find /usr/share/ -type f -printf "%f\n" | sort > all.txt
+find /usr/share/ -type f -printf "%f\n" | sort | uniq > uniq.txt
+```
+
+- Find all symblinks in a directory
+```
+find . -type l -ls
+```
+
+- Delete empty folders
+```
+find /path/to/folder -depth -type d -empty -delete
+```
+
 <a name="network"></a>
-## Setup IP Address
+## Network
 
 - Enable eth0
 ```
 udhcpc -i eth0
 route add default gw xxx.xxx.xxx.xx eth0
 ```
+
 - Show IP address assigned to eth0
 ```
 ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'
+```
+
+- Network sockets usage
+```
+netstat -ltnp | grep -w ':80'
+lsof -i :80
+```
+```
+netstat -ano -p tcp
+sudo netstat -ap | grep 5000
 ```
 
 <a name="av_conversion"></a>
@@ -96,3 +138,9 @@ ffmpeg -i old.mp3 -acodec libmp3lame -ac 2 -ab 64k -ar 44100 new-1.mp3
 ```
 for file in *.jpg; do convert "${file%%.*}".jpg "${file%%.*}".png; done
 ```
+
+### Convert video to PNG
+```
+ffmpeg -i input.mp4 output_%02d.png
+```
+- `-r 1.0` - Pass to above command to capture frame after 1 seconds instead of all.
