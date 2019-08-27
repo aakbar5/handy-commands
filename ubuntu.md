@@ -30,10 +30,42 @@
 find . -type f -name "postgis"
 ```
 
-- Find a file with a specific name (with loop and custom command)
+- Find file(s) with a specific name (with loop and custom command)
 ```
 for i in `find . -name ".mk"`; do echo $i; done
 for i in `find . -name ".mk"`; do git add -f $i; done
+```
+
+- File file(s) of specific extension (Show full path path of the found file)
+```
+for i in `find . -name "*.cpp"`; do echo $i; done
+```
+
+- File file(s) of specific extension (Show only file name)
+```
+for i in `find . -name "*.cpp"`; do echo $(basename $i); done
+```
+NOTE: `basename` is part of the POSIX spec so hoping it is supported by underlying OS otherwise
+```
+for i in `find . -name "*.cpp"`; do echo ${i##*/}; done
+```
+- File file(s) of specific extension (Show only dir name)
+```
+for i in `find . -name "*.cpp"`; do echo $(dirname $i); done
+```
+NOTE: `dirname` is part of the POSIX spec so hoping it is supported by underlying OS otherwise
+```
+for i in `find . -name "*.cpp"`; do echo ${i%/*}; done
+```
+
+- File file(s) of specific extension (Show file with full path but without .ext)
+```
+for i in `find . -name "*.cpp"`; do echo ${i%.cpp}; done
+```
+
+- Rename files of specific extensions
+```
+for i in `find . -name "*.cpp"`; do mv $i ${i%.cpp}.cc; done
 ```
 
 - Find all files
