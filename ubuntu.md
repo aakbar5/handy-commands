@@ -21,6 +21,17 @@
 - `id -gn USER_NAME` - Get primary group name for a user
 - `usermod -g GROUP_NAME USER_NAME` - Change group for a user
 - `sudo find /path/to/search -group GROUP_NAME -d type d` - Find out folders belong to a specific group
+- Find and kill a process by name
+```
+PID=$(ps -ef | grep <process_name> awk '{print $2}')
+kill -9 $PID
+```
+
+- Sdcard backup & restore
+```
+sudo dd bs=4M if=/dev/mmcblk0 | gzip > ~/Desktop/sdcard_backup.gz
+sudo gzip -dc ~/Desktop/sdcard_backup.gz | dd bs=4M of=/dev/mmcblk0
+```
 
 <a name="find"></a>
 ## Find Commands
@@ -28,6 +39,17 @@
 - Find a file of specific name
 ```
 find . -type f -name "postgis"
+```
+
+- Get rid of the Clock skew detected. Your build may be incompleted.Put timestamps on all files equal to current time
+```
+find . -exec touch {} \;
+```
+
+- Change format of the files
+```
+for i in `find . -name "*.cc"`; do dos2unix $i; done
+for i in `find . -name "*.cc"`; do unix2dos $i; done
 ```
 
 - Find file(s) with a specific name (with loop and custom command)
@@ -91,6 +113,11 @@ find /path/to/folder -depth -type d -empty -delete
 ```
 udhcpc -i eth0
 route add default gw xxx.xxx.xxx.xx eth0
+```
+- OR -
+```
+netcfg eth0 up
+netcfg eth0 dhcp
 ```
 
 - Show IP address assigned to eth0
@@ -176,3 +203,8 @@ for file in *.jpg; do convert "${file%%.*}".jpg "${file%%.*}".png; done
 ffmpeg -i input.mp4 output_%02d.png
 ```
 - `-r 1.0` - Pass to above command to capture frame after 1 seconds instead of all.
+
+### Convert PNG to RGB565
+```
+ffmpeg -vcodec png -i test1.png -vcodec rawvideo -f rawvideo -pix_fmt rgb565 test1.data
+```
