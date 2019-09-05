@@ -39,6 +39,7 @@
 
 <a name="misc"></a>
 ## Misc commands
+- `bitbake -e | grep EXTERNAL_TOOLCHAIN_SYSROOT=` - Grep toolchain value
 
 ### Expand disk size
 - Create an extra disk space in rootfs.
