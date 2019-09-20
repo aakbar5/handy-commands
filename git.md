@@ -242,6 +242,11 @@ ssh-keygen -t rsa -b 4096 -C "secondary_user@secondary.com" -f ~/.ssh/id_rsa_sec
 eval "$(ssh-agent -s)"
 ```
 
+- View active keys
+```
+ssh-add -L
+```
+
 - Add above generated SSH private key(s) to the ssh-agent
 ```
 ssh-add ~/.ssh/id_rsa_primary
@@ -315,6 +320,11 @@ git ls-files . --exclude-standard --others
 - List ignored files
 ```
 git ls-files --exclude-standard --others --ignored
+```
+
+- List ignored files in a specific directory
+```
+git ls-files --exclude-standard --others --ignored --directory </path/to/directory>
 ```
 
 - Remove a file from history (Becareful: It will change git hash values.)

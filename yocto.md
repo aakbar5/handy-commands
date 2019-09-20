@@ -30,16 +30,18 @@
 <a name="images"></a>
 ## Images
 
-- `bitbake -e <image-name> | grep '^DISTRO_FEATURES'` - Grep value `DISTRO_FEATURES` used to build an image
-- `bitbake -e <image-name> | grep '^IMAGE_FSTYPES='` - Grep value `DISTRO_FEATURES` used to build an image
+- `bitbake -e <image-name> | grep '^DISTRO_FEATURES'` - Grep value `DISTRO_FEATURES` used to build image # <image-name>
+- `bitbake -e <image-name> | grep '^IMAGE_FSTYPES='` - Grep value `DISTRO_FEATURES` used to build image # <image-name>
 - `bitbake -g <image-name>` - It will produce a couple of files which can be used to extract info related to pulled packages/versions.
-- `bitbake -g <image-name> -u depexp` - Show package dependency for an image
+- `bitbake -g <image-name> -u depexp` - Show package dependency for image # <image-name>
 - `bitbake -g <image-name> && cat pn-buildlist | sort | uniq` - Show all packages pulled for the <image-name>
-- `bitbake -g <image-name> && cat pn-buildlist | grep -ve "native" | sort | uniq` - Show all packages pulled for the <image-name> especially for native
+- `bitbake -g <image-name> && cat pn-buildlist | grep -ve "native" | sort | uniq` - Show all packages pulled for the <image-name> especially for `native`
 
 <a name="misc"></a>
 ## Misc commands
-- `bitbake -e | grep EXTERNAL_TOOLCHAIN_SYSROOT=` - Grep toolchain value
+
+### Find out toolchain used by the Yocto
+`bitbake -e | grep EXTERNAL_TOOLCHAIN_SYSROOT=`
 
 ### Expand disk size
 - Create an extra disk space in rootfs.
