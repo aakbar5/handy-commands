@@ -9,6 +9,7 @@
 - `systemctl disable foo.service` - Uninstall the service
 - `systemctl -l --no-pager status foo.service` - Show log of the service
 - `systemctl -l --no-pager list-unit-files --state=enabled` - Show the services which are in enabled state.
+- `systemctl -l --no-pager list-unit-files --state=enabled,running` - Show the services which are in enabled or running state.
 
 <a name="log"></a>
 ## Systemd log

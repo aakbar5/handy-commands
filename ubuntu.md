@@ -1,8 +1,9 @@
 # Ubuntu
 - [General commands](#general)
+- [Loop devices](#loop_devices)
 - [Find commands](#find)
 - [Network](#network)
-- [Audio/Video Conversion](#av_conversion)
+- [Audio/Video conversion](#av_conversion)
 
 <a name="general"></a>
 ## General commands
@@ -33,8 +34,31 @@ sudo dd bs=4M if=/dev/mmcblk0 | gzip > ~/Desktop/sdcard_backup.gz
 sudo gzip -dc ~/Desktop/sdcard_backup.gz | dd bs=4M of=/dev/mmcblk0
 ```
 
+<a name="loop_devices"></a>
+## Loop devices
+
+- Create a disk for FAT type
+```
+dd if=/dev/zero of=fat.bin bs=1M count=6
+mkfs.vfat ramdisk.bin
+mkdir fat
+sudo mount -o loop fat.bin fat/
+sudo cp <list of files> fat/
+sudo umount fat
+```
+
+- Mount ext4 dd image
+```
+dd if=/dev/zero of=ext4.bin bs=1M count=50
+losetup /dev/loop0 ext4.bin
+mkfs.ext4 /dev/loop0
+
+mkdir -p ext4
+mount /dev/loop0 ext4
+```
+
 <a name="find"></a>
-## Find Commands
+## Find commands
 
 - Find a file of specific name
 ```
@@ -96,7 +120,7 @@ find /usr/share/ -type f -printf "%f\n" | sort > all.txt
 find /usr/share/ -type f -printf "%f\n" | sort | uniq > uniq.txt
 ```
 
-- Find all symblinks in a directory
+- Find all sym links in a directory
 ```
 find . -type l -ls
 ```
@@ -136,7 +160,7 @@ sudo netstat -ap | grep 5000
 ```
 
 <a name="av_conversion"></a>
-## Audio/Video Conversion
+## Audio/Video conversion
 
 - Handy commands to manipulate audio/video files.
 

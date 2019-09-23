@@ -1,5 +1,6 @@
 # Table of Contents
 - [Recipe](#recipes)
+- [bbappend](#bbappend)
 - [Layers](#layers)
 - [Images](#images)
 - [Misc commands](#misc)
@@ -18,6 +19,33 @@
 - `bitbake virtual/kernel -c menuconfig` - Show menuconfig for the kernel
 - `bitbake virtual/kernel -c cleanall` - Clean the kernel build
 
+<a name="bbappend"></a>
+## bbappend
+
+- `bbappend` files can be used to pass-on new configuration to a recipe.
+
+### Enable new feature
+- Add features using `bbappend`
+
+Enable features:
+```
+PACKAGECONFIG ?= "feature1"
+PACKAGECONFIG += "feature2"
+```
+
+Pass different options as per new features:
+```
+PACKAGECONFIG[feature1] = "--enable-feature1,--disable-feature1,dependencies"
+PACKAGECONFIG[feature2] = "--enable-feature2,--disable-feature2,dependencies
+```
+
+### Pass build flags
+
+- Pass new flags to build:
+```
+EXTRA_OECMAKE += " -DENABLE_MODULE_1=1 -DEXTRA_FLAGS=1"
+```
+
 <a name="layers"></a>
 ## Layers
 
@@ -30,12 +58,12 @@
 <a name="images"></a>
 ## Images
 
-- `bitbake -e <image-name> | grep '^DISTRO_FEATURES'` - Grep value `DISTRO_FEATURES` used to build image # <image-name>
-- `bitbake -e <image-name> | grep '^IMAGE_FSTYPES='` - Grep value `DISTRO_FEATURES` used to build image # <image-name>
+- `bitbake -e <image-name> | grep '^DISTRO_FEATURES'` - Grep value `DISTRO_FEATURES` used to build <image-name>
+- `bitbake -e <image-name> | grep '^IMAGE_FSTYPES='` - Grep value `DISTRO_FEATURES` used to build <image-name>
 - `bitbake -g <image-name>` - It will produce a couple of files which can be used to extract info related to pulled packages/versions.
-- `bitbake -g <image-name> -u depexp` - Show package dependency for image # <image-name>
+- `bitbake -g <image-name> -u depexp` - Show package dependency for <image-name>
 - `bitbake -g <image-name> && cat pn-buildlist | sort | uniq` - Show all packages pulled for the <image-name>
-- `bitbake -g <image-name> && cat pn-buildlist | grep -ve "native" | sort | uniq` - Show all packages pulled for the <image-name> especially for `native`
+- `bitbake -g <image-name> && cat pn-buildlist | grep -ve "native" | sort | uniq` - Show all packages pulled for <image-name> especially for `native`
 
 <a name="misc"></a>
 ## Misc commands
