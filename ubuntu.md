@@ -49,12 +49,14 @@ sudo umount fat
 
 - Mount ext4 dd image
 ```
-dd if=/dev/zero of=ext4.bin bs=1M count=50
-losetup /dev/loop0 ext4.bin
-mkfs.ext4 /dev/loop0
+sudo losetup -f   # Find out next free loop
+
+sudo dd if=/dev/zero of=ext4.bin bs=1M count=50
+sudo losetup /dev/loop0 ext4.bin
+sudo mkfs.ext4 /dev/loop0
 
 mkdir -p ext4
-mount /dev/loop0 ext4
+sudo mount -t ext4 /dev/loop0 ext4
 ```
 
 <a name="find"></a>
@@ -142,6 +144,15 @@ route add default gw xxx.xxx.xxx.xx eth0
 ```
 netcfg eth0 up
 netcfg eth0 dhcp
+```
+- OR -
+```
+ifconfig eth0 up
+ifconfig eth0 down
+dhclient eth0
+
+auto eth0
+iface eth0 inet dhcp
 ```
 
 - Show IP address assigned to eth0

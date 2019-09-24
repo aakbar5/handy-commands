@@ -82,6 +82,11 @@ git push origin --delete {the_remote_branch}
 git push --set-upstream origin new_branch
 ```
 
+- Create a branch in a old repo without history
+```
+git checkout --orphan newbranch
+```
+
 <a name="remote_tracking"></a>
 ## Remote tracking
 
