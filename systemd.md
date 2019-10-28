@@ -46,10 +46,13 @@
 Description=Hello world Application
 Before=
 After=multi-user.target
+Before=something.service
 
 [Service]
 Type=idle
+Environment=APP_OPTION=0
 WorkingDirectory=/home/root
+ExecStartPre=/bin/cp -f /home/root/resouce /home/root
 ExecStart=/home/root/app
 
 [Install]
