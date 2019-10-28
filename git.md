@@ -110,6 +110,11 @@ git remote -v
 git remote add <remote_name> <url>
 ```
 
+- To remove a remote
+```
+git remote rm <remote_name>
+```
+
 - To set/change URL for a remote
 ```
 git remote set-url origin <url>
