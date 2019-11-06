@@ -1,5 +1,6 @@
 # Table of Contents
 - [Service](#service)
+- [Target](#target)
 - [System](#system)
 - [Sample service](#sample_service)
 - [Sample target](#sample_target)
@@ -23,6 +24,12 @@
 	```
 - `systemctl daemon-reload` - Reload systemd
 - `systemctl reset-failed` - Reset the failed state of all units
+
+<a name="target"></a>
+## Target
+- `systemctl --no-pager list-units --type target` - Show all targets
+- `ls -al /lib/systemd/system/runlevel*.target` - See mapping of runlevels to targets
+- `systemctl get-default` - Show default target
 
 <a name="system"></a>
 ## System
