@@ -3,6 +3,7 @@
 - [Loop devices](#loop_devices)
 - [Find commands](#find)
 - [DD commands](#dd)
+- [Redirection](#redirection)
 - [Network](#network)
 - [Audio/Video conversion](#av_conversion)
 
@@ -127,7 +128,8 @@ dd if=/dev/urandom of=/dev/fb0 bs=1024 count=8100
 find . -type f -name "postgis"
 ```
 
-- Get rid of the Clock skew detected. Your build may be incompleted.Put timestamps on all files equal to current time
+- Get rid of the Clock skew detected. Your build may be in-complete.
+  Put timestamps on all files equal to current time
 ```
 find . -exec touch {} \;
 ```
@@ -191,6 +193,20 @@ find . -type l -ls
 ```
 find /path/to/folder -depth -type d -empty -delete
 ```
+
+<a name="redirection"></a>
+## Redirection
+
+- `1` denotes `stdout`; `2` denotes `stderr`.
+- `>` - Redirect output of the command onto the right side (Overwrite the contents of output.txt)
+- `>>` - Redirect output of the command onto the right side (Append to the contents of output.txt)
+- `command  > output.txt` - Redirect standard output stream to output.txt
+- `command 2> output.txt` - Redirect error stream to output.txt
+- `command &> output.txt` - Redirect both (standard & error) streams to output.txt
+- `command > output.txt 2>&1` - Redirect standard output to output.txt and also redirect error stream to standard output stream
+- `command | tee output.txt` - Copy standard output stream to output.txt
+- `command | tee -a output.txt` - Copy & append standard output stream to output.txt
+- `command |& tee output.txt` - Copy both (standard & error) streams to output.txt
 
 <a name="network"></a>
 ## Network
