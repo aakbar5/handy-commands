@@ -12,11 +12,12 @@
 - [If statement](#if-statement)
 - [Switch statement](#switch-statement)
 - [File validation](#file-validation)
+- [Compound statement](#compound-statement)
 - [Loops](#loops)
 - [String manipulation](#string-manipulation)
     - [Length](#length)
     - [Slicing](#slicing)
-    - [Concentate](#concentate)
+    - [Concatenate](#concatenate)
     - [Changing case](#changing-case)
     - [Comparison](#comparison)
     - [Substitution](#substitution)
@@ -353,6 +354,18 @@ esac
 [[ "/path/to/f1" -nt "/path/to/f2" ]] && echo "f1 is more recent than f2"
 [[ "/path/to/f1" -ot "/path/to/f2" ]] && echo "f2 is more recent than 1"
 [[ "/path/to/f1" -ef "/path/to/f2" ]] && echo "f1 & f2 are the same files"
+```
+
+
+# Compound statement
+- second part of the command after `;` will not be executed
+```
+[ -f test.txt ] && echo "first command"; cat "second command";
+```
+
+- use compound statement to execute multiple commands
+```
+[ -f asad.txt ] && { echo "first command"; cat "second command"; }
 ```
 
 
