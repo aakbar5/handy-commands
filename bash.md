@@ -47,6 +47,7 @@ Line #2 of Multilines comments
 COMMENTS
 ```
 
+
 # Echo
 - Simply print message
 ```bash
@@ -66,6 +67,7 @@ echo -e "Hello\tworld!"
 ```
 > `Hello	world!`
 
+
 # Special variables
 - `$0` - Name of the bash script
 - `$1` - `$9` - Argument passed to the script
@@ -80,6 +82,7 @@ echo -e "Hello\tworld!"
 - `$RANDOM` - Returns a different random number each time is it referred to
 - `$LINENO` - Current line number of the script
 
+
 # Sleep
 
 ```bash
@@ -89,6 +92,7 @@ sleep 1m # Sleep for 1 minute
 sleep 1h # Sleep for 1 hour
 sleep 1d # Sleep for 1 day
 ```
+
 
 # Variables
 
@@ -236,6 +240,7 @@ echo $c
 ```
 > `5`
 
+
 # If statement
 
 - Need a space after `if`, `[` and before `]`
@@ -299,6 +304,7 @@ fi
 > `First number is greater than second number` \
 > `First number is greater than/equal second number`
 
+
 # Switch statement
 
 ```bash
@@ -319,6 +325,7 @@ case $x in
 esac
 ```
 > `x is having value b/w 4..7`
+
 
 # File validation
 
@@ -486,6 +493,7 @@ for ((i=0; i < ${#list[@]}; ++i)); do
      echo "Index # $i: ${list[i]}"
 done
 ```
+
 
 # String manipulation
 ## Length
@@ -682,7 +690,6 @@ echo ${str/%test}
 ${VAR%%suffix}
 ```
 
-
 - Remove long prefix
 ```bash
 ${VAR##prefix}
@@ -771,6 +778,7 @@ echo "Extension:        ${path##*.}"
 > `Path:             /path/to` \
 > `File Name + ext:  file.ext` \
 > `Extension:        ext`
+
 
 # Variable substitution
 https://www.gnu.org/software/bash/manual/bash.html#Shell-Parameter-Expansion
