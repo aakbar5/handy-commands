@@ -2,6 +2,7 @@
 - [General commands](#general)
 - [Loop devices](#loop_devices)
 - [Find commands](#find)
+- [DD commands](#dd)
 - [Network](#network)
 - [Audio/Video conversion](#av_conversion)
 
@@ -28,12 +29,6 @@ PID=$(ps -ef | grep <process_name> awk '{print $2}')
 kill -9 $PID
 ```
 
-- Sdcard backup & restore
-```
-sudo dd bs=4M if=/dev/mmcblk0 | gzip > ~/Desktop/sdcard_backup.gz
-sudo gzip -dc ~/Desktop/sdcard_backup.gz | dd bs=4M of=/dev/mmcblk0
-```
-
 <a name="loop_devices"></a>
 ## Loop devices
 
@@ -57,6 +52,71 @@ sudo mkfs.ext4 /dev/loop0
 
 mkdir -p ext4
 sudo mount -t ext4 /dev/loop0 ext4
+```
+
+- Shrinking disk image (using gparted)
+```
+sudo losetup -f                 # Find out next free loop
+sudo losetup /dev/loop<0> diskimage.img
+sudo partprobe /dev/loop<0>     # Get available partitions
+sudo gparted /dev/loop<0>       # Use gparted to manipulate partition
+sudo losetup -d /dev/loop<0>    # Unload device
+```
+
+- Shrinking disk image (using gparted)
+```
+fdisk -lu diskimage.img         # Get details of partitions
+```
+
+```
+Disk diskimage.img: 4096 MB, 4096000000 bytes, 8000000 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x000a1bc7
+
+      Device Boot      Start         End      Blocks   Id  System
+diskimage.img           2048     5872026     5869978    b  W95 FAT32
+```
+Make note of the number shown under `End`, now use it in following command:
+```
+truncate --size=$[(5872026+1)*512] diskimage.img
+```
+
+<a name="dd"></a>
+## DD commands
+
+- Dump /dev/sda to /dev/sdb
+```
+dd if=/dev/sda of=/dev/sdb
+dd if=/dev/sda of=/dev/sdb bs=64k conv=noerror,sync
+```
+
+- Dump disk to a compressed image
+```
+dd if=/dev/sda bs=1k | gzip > disk.gzip
+gzip -d -c disk.gzip | dd of=/dev/sda bs=1k
+```
+
+- Create a 5MB disk image
+```
+dd if=/dev/zero of=disk.img bs=1k count=5MB
+```
+
+- Wipe a disk by writing zeros to it
+```
+dd if=/dev/zero of=/dev/sda bs=16M
+```
+
+- Write random numbers to disk
+```
+dd if=/dev/urandom of=/dev/sda bs=16M
+```
+
+- Send random data to framebuffer device
+```
+cat /dev/urandom > /dev/fb0
+dd if=/dev/urandom of=/dev/fb0 bs=1024 count=8100
 ```
 
 <a name="find"></a>
