@@ -30,6 +30,10 @@
     - [`${parameter-word}`](#parameter-word)
     - [`${parameter:=word}`](#parameterword)
     - [`${parameter=word}`](#parameterword)
+- [Invoking script](#invoking-script)
+- [Random number](#random-number)
+- [Function](#function)
+- [Global and local variables](#global-and-local-variables)
 
 <!-- /TOC -->
 
@@ -820,4 +824,89 @@ echo ${var}  # Var is empty
 ```bash
 echo ${var=30} # Set 30; if var is not set or null
 echo ${var}  # Var is empty
+```
+
+
+# Invoking script
+- Invoking another script (as a separate process) from within script
+- As new script is a separate process so envrionment modifications
+  done for the current script won't be visible to the new script
+```bash
+#!/bin/bash
+./script.sh
+# - or -
+/path/to/script.sh
+# - or -
+/bin/bash script.sh
+```
+
+- Invoking another script with in the process
+- Now envrionment modification will be visisble to the new script
+```bash
+#!/bin/bash
+. ./script.sh
+# - or -
+. /path/to/script.sh
+# - or -
+source script.sh
+```
+
+
+# Random number
+- Generate 32 characters having a-z, A-Z, 0-9
+```bash
+cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 32
+```
+- Generate a number between 0-999
+```bash
+cat /dev/urandom | tr -dc '0-9' | fold -w3 | head -n1
+```
+Use `-w3` of fold command to control of number of digits in a number.
+
+- Generate numbers between ranges
+```bash
+shuf -i 100-250 -n 10
+shuf -i 100-250 -n 10 --random-source /dev/urandom
+```
+Generate numbers b/w 100-250.
+
+
+# Function
+[Different style of functions](https://gist.github.com/aakbar5/9ac8073f30965c6d138b041dfc4d69a8)
+
+
+# Global and local variables
+```bash
+var=10
+function test() {
+  var=20 # Global var has been modified       
+  echo "var in test = $var"
+}
+
+test
+echo "var in main = $var"
+```
+
+```
+var in test = 20
+var in main = 20
+```
+
+Output will be like following:
+```bash
+var=10
+function test() {
+  local var=20 # Global var will retain its value
+               # A var has been created which is local to this function
+  echo "var in test = $var"
+}
+
+test
+echo "var in main = $var"
+```
+
+Output will be like following:
+```
+var in test = 20
+var in main = 10
 ```
