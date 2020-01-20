@@ -277,6 +277,12 @@ ffmpeg -i input.mp4 -vn -f mp3 output.mp3
 for file in *.mp4; do ffmpeg -i "${file%%.*}.mp4" -vn -f mp3 "${file%%.*}.mp3"; done
 ```
 
+### audio track + picture = video
+- Convert mp3 file to audio with a picture
+```
+ffmpeg -loop 1 -i picture.jpg -i input_audio.mp3 -shortest -c:v libx264 -tune stillimage -c:a copy video.mp4
+```
+
 ### Merge two MP4 files
 ```
 ffmpeg -i concat:"input1.mp4|input2.mp4" output.mp4
