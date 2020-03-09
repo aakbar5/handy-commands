@@ -18,6 +18,7 @@
 - `bitbake virtual/kernel -c compile` - Build a kernel
 - `bitbake virtual/kernel -c menuconfig` - Show menuconfig for the kernel
 - `bitbake virtual/kernel -c cleanall` - Clean the kernel build
+- `bitbake -e virtual/kernel | grep "^PN"` - To find out package providing kernel
 
 <a name="bbappend"></a>
 ## bbappend

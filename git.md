@@ -263,6 +263,9 @@ ssh-add ~/.ssh/id_rsa_primary
 ssh-add ~/.ssh/id_rsa_secondary
 ```
 
+- To test ssh key with github.com
+ssh -T git@github.com
+
 - Copy above generated SSH private key(s) to the clipboard
 ```
 xclip -sel clip < ~/.ssh/id_rsa_primary.pub
