@@ -375,6 +375,11 @@ esac
 
 # Loops
 
+- while loop (for every)
+```
+while true; do echo "hello"; sleep 2; done
+```
+
 - while loop
 ```bash
 a=1
