@@ -358,3 +358,8 @@ git gc --prune=now
 
 - List only deleted items for commit
   `git ls-files --deleted -z | xargs -0 git rm`
+
+- Create empty commit
+```
+git commit --allow-empty -m "Do an empty commit"
+```
