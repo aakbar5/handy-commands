@@ -17,8 +17,11 @@
 
 - `bitbake virtual/kernel -c compile` - Build a kernel
 - `bitbake virtual/kernel -c menuconfig` - Show menuconfig for the kernel
+- `bitbake virtual/kernel -c diffconfig` - Show diff in config
 - `bitbake virtual/kernel -c cleanall` - Clean the kernel build
+
 - `bitbake -e virtual/kernel | grep "^PN"` - To find out package providing kernel
+- `bitbake -e u-boot | grep "^WORKDIR"` - To find out folder used as working directory
 
 <a name="bbappend"></a>
 ## bbappend
