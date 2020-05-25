@@ -203,6 +203,12 @@ git clone --recurse-submodules link-to-repo
 git submodule update --init --recursive
 ```
 
+- Check out the master and update all submodules
+```
+git submodule foreach --recursive git checkout master
+git submodule foreach --recursive git pull
+```
+
 - Pull/fetch changes for submodules
 ```
 git submodule foreach --recursive git checkout master
@@ -362,4 +368,9 @@ git gc --prune=now
 - Create empty commit
 ```
 git commit --allow-empty -m "Do an empty commit"
+```
+
+- Ammend author the last commit
+```
+git commit --amend --author="aakbar5 <16612387+aakbar5@users.noreply.github.com>"
 ```
