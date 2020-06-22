@@ -61,21 +61,11 @@ git push origin :refs/tags/<old_tag_name>
 <a name="branches"></a>
 ## Branches
 
-- List down all branches
-```
-git branch -vv
-git remote show origin
-```
-
-- Remove branch locally
-```
-git branch -d {the_local_branch}
-```
-
-- Remove remote branch
-```
-git push origin --delete {the_remote_branch}
-```
+- List all local branches -- `git branch -avv`
+- List all local + remote branches -- `git branch -arvv`
+- List branch of a specific remote -- `git branch --remote --list origin*`
+- Remove branch locally -- `git branch -d {the_local_branch}`
+- Remove remote branch -- `git push origin --delete {the_remote_branch}`
 
 - Push a new branch and set local branch to track the new remote
 ```
@@ -93,7 +83,7 @@ git checkout --orphan newbranch
 - To view remote tracking of the branches
   * simple command
     ```
-    git branch -vv
+    git branch -rvv
     ```
   * more detailed view
     ```
