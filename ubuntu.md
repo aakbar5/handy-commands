@@ -325,3 +325,13 @@ ffmpeg -i input.mp4 output_%02d.png
 ```
 ffmpeg -vcodec png -i test1.png -vcodec rawvideo -f rawvideo -pix_fmt rgb565 test1.data
 ```
+
+## Convert RAW data image format to PNG
+```
+ffmpeg -f rawvideo -pixel_format rgba -video_size 1920x1080 -i input.data test.png
+```
+
+## Convert PNGs to video
+```
+ffmpeg -framerate 1/5 -c:v libx264 -r 30 -pix_fmt yuv420p -i *%03d.png output.mp4
+```

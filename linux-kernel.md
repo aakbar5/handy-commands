@@ -81,4 +81,15 @@
 
 - Verify config of the running kernel
 	- Dump config: `cat /proc/config.gz | gunzip > active_config.config` or `zcat /proc/config.gz > active_config.config`
-    - Needs kernel support for this: General setup > Kernel .config support > Enable access to .config through /proc/config.gz
+    - Needs kernel support for this: `General setup > Kernel .config support > Enable access to .config through /proc/config.gz`.
+
+- DRM manipulation via commandline
+    - Chanage debug level
+        - `cat /sys/module/drm/parameters/debug`
+        - `echo 0xff > /sys/module/drm/parameters/debug`
+
+    - Device status
+        - `cat /sys/class/drm/card0-HDMI-A-1/status`
+        - `cat /proc/meminfo | grep -i cma`
+        - `cat /sys/kernel/debug/dma_buf/bufinfo`
+        - `cat /sys/kernel/debug/dri/0/state`
