@@ -54,6 +54,7 @@
 
 - `nm -S --size-sort -s </path/to/executable/file>` - Getting symbols
 - `nm </path/to/c++/library> | c++filt` - Demangles C++ symbols
+- `strip --strip-debug </path/to/input/lib/program> -o </path/to/output/file>` - Strip debug info
 - `rm /etc/ld.so.cache && ldconfig` - Force the system to rebuild ld cache
 - `readelf libcl.so -W -d | grep NEEDED` - Get list of the external libraries required by the ELF object
 - `objdump -p /path/to/program | grep NEEDED` - Get list of the external libraries required by the ELF object
