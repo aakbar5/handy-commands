@@ -136,9 +136,10 @@ find . -exec touch {} \;
 
 - Change format of the files
 ```
-for i in `find . -name "*.cc"`; do dos2unix $i; done
-for i in `find . -name "*.cc"`; do unix2dos $i; done
+for i in `find . -name "*.cc" or -name "*.hpp`; do dos2unix $i; done
+for i in `find . -name "*.cc" or -name "*.hpp`; do unix2dos $i; done
 ```
+- `or` -- Use to OR multiple `-name` flags.
 
 - Find file(s) with a specific name (with loop and custom command)
 ```
@@ -148,34 +149,34 @@ for i in `find . -name ".mk"`; do git add -f $i; done
 
 - File file(s) of specific extension (Show full path path of the found file)
 ```
-for i in `find . -name "*.cpp"`; do echo $i; done
+for i in `find . -name "*.cc"`; do echo $i; done
 ```
 
 - File file(s) of specific extension (Show only file name)
 ```
-for i in `find . -name "*.cpp"`; do echo $(basename $i); done
+for i in `find . -name "*.cc"`; do echo $(basename $i); done
 ```
 NOTE: `basename` is part of the POSIX spec so hoping it is supported by underlying OS otherwise
 ```
-for i in `find . -name "*.cpp"`; do echo ${i##*/}; done
+for i in `find . -name "*.cc"`; do echo ${i##*/}; done
 ```
 - File file(s) of specific extension (Show only dir name)
 ```
-for i in `find . -name "*.cpp"`; do echo $(dirname $i); done
+for i in `find . -name "*.cc"`; do echo $(dirname $i); done
 ```
 NOTE: `dirname` is part of the POSIX spec so hoping it is supported by underlying OS otherwise
 ```
-for i in `find . -name "*.cpp"`; do echo ${i%/*}; done
+for i in `find . -name "*.cc"`; do echo ${i%/*}; done
 ```
 
 - File file(s) of specific extension (Show file with full path but without .ext)
 ```
-for i in `find . -name "*.cpp"`; do echo ${i%.cpp}; done
+for i in `find . -name "*.cc"`; do echo ${i%.cc}; done
 ```
 
 - Rename files of specific extensions
 ```
-for i in `find . -name "*.cpp"`; do mv $i ${i%.cpp}.cc; done
+for i in `find . -name "*.cc"`; do mv $i ${i%.cc}.cc; done
 ```
 
 - Find all files

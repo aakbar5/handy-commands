@@ -87,6 +87,13 @@ echo "    a b" | sed -e 's/^[ \t]*//'
 echo "		a b" | sed -e 's/^[ \t]*//'
 ```
 
+### Replace trailing spaces
+```
+echo "a b  " | sed -e 's/[[:space:]]*$//'
+echo "a b       " | sed -e 's/[[:space:]]*$//'
+```
+- `:space` -- Use posix standard to specify space which will handle tabs too.
+
 ### Remove lines starting with string
 ```
 sed -i '/^string/d' file.txt
