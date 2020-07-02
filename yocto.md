@@ -55,6 +55,9 @@ EXTRA_OECMAKE += " -DENABLE_MODULE_1=1 -DEXTRA_FLAGS=1"
 
 - `bitbake-layers show-layers` - Show currently configured layers
 - `bitbake-layers show-recipes` - Show all recipes and their versions alongwith the layer
+- `bitbake-layers show-recipes <recipe-name>` - Show all recipes and their versions for a specific recipe
+		- `PREFERRED_VERSION_<recipe-name>` - To use a specific version.
+
 - `bitbake-layers show-recipes "*-image-*"` - Show recipes to produce image(s).
 - `bitbake-layers show-appends ` - Show all .bbappend files and their respective recipes
 - `bitbake-layers show-overlayed ` - Show overlayed recipes
