@@ -266,16 +266,15 @@ ffmpeg -i input.mp4 -vf "setpts=speed_multiplier*PTS" output.mp4
 ```
 ffmpeg -i input.mp4 -vf "setpts=PTS/factor" output.mp4
 ```
-- Speed up the video by using x factor.
 
 ### Extract audio track
-- MP4 to mp3
+- audio track as aac
 ```
 ffmpeg -i input.mp4 -vn -acodec copy audio.aac
 ```
+- audio track as mp3
 ```
 ffmpeg -i input.mp4 -vn -f mp3 output.mp3
-for file in *.mp4; do ffmpeg -i "${file%%.*}.mp4" -vn -f mp3 "${file%%.*}.mp3"; done
 ```
 
 ### audio track + picture = video
@@ -300,11 +299,34 @@ ffmpeg -i input.mp4 -vf transpose=1 output.mp4
 ```
 
 ## Reduce video size
+- Change quality of the video
 ```
 ffmpeg -i input.mp4 -c:v libx264 -crf 18 -c:a copy output.mp4
 ```
-- CRF @ https://slhck.info/video/2017/02/24/crf-guide.html
-- Play with it to see quality vs size
+
++ CRF @ https://slhck.info/video/2017/02/24/crf-guide.html
++ Play with it to see quality vs size
+
+
+- Change the resolution & bit rate
+```
+ffmpeg -i input.mp4 -s 320x240 -b:v 512k -vcodec mpeg1video -acodec copy output.mp4
+```
+
+- Change the resolution
+```
+ffmpeg -i input.mp4 -vf "scale=iw/2:ih/2" output.mp4
+```
+
+- Clip the video
+```
+ffmpeg -i input.mp4 -c copy -ss 00:03:22.0 -to 00:08:49.0 output.mp4
+```
+
+## Embed subtitles
+```
+ffmpeg -i input.mp4 -vf "subtitles=lyrics.srt:force_style='FontName=DejaVu Serif,FontSize=24'" output.mp4
+```
 
 ### Reduce audio file size
 ```
@@ -335,4 +357,9 @@ ffmpeg -f rawvideo -pixel_format rgba -video_size 1920x1080 -i input.data test.p
 ## Convert PNGs to video
 ```
 ffmpeg -framerate 1/5 -c:v libx264 -r 30 -pix_fmt yuv420p -i *%03d.png output.mp4
+```
+
+## Darken the images
+```
+for i in `find . -name "*.jpg"`; do convert $i -normalize -threshold 80% $i; done
 ```
