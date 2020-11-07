@@ -364,3 +364,16 @@ git commit --allow-empty -m "Do an empty commit"
 ```
 git commit --amend --author="aakbar5 <16612387+aakbar5@users.noreply.github.com>"
 ```
+
+- Generate patch with binary file - `git format-patch --full-index --binary <commit-id>`
+    - Now use `git am *.patch` command to apply patches.
+
+- Update your forked repo with the original repo
+```
+git checkout <local-branch>
+git remote -v
+git remote add upstream </path/to/original/repo>
+git remote -v
+git fetch upstream
+git merge upstream/branch-name
+```
