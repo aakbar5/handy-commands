@@ -360,6 +360,13 @@ ffmpeg -framerate 1/5 -c:v libx264 -r 30 -pix_fmt yuv420p -i *%03d.png output.mp
 ```
 
 ## Darken the images
+- B & W image
 ```
 for i in `find . -name "*.jpg"`; do convert $i -normalize -threshold 80% $i; done
 ```
+
+- Enhance color image
+```
+for i in `find . -name "*.jpg"`; do convert $i -channel RGB -contrast-stretch 1x1% $i; done
+```
+https://legacy.imagemagick.org/Usage/color_mods/
