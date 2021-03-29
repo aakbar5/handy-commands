@@ -66,16 +66,7 @@ git push origin :refs/tags/<old_tag_name>
 - List branch of a specific remote -- `git branch --remote --list origin*`
 - Remove branch locally -- `git branch -d {the_local_branch}`
 - Remove remote branch -- `git push origin --delete {the_remote_branch}`
-
-- Push a new branch and set local branch to track the new remote
-```
-git push --set-upstream origin new_branch
-```
-
-- Create a branch in a old repo without history
-```
-git checkout --orphan newbranch
-```
+- Create a branch in a old repo without history -- `git checkout --orphan newbranch`
 
 <a name="remote_tracking"></a>
 ## Remote tracking
@@ -113,6 +104,11 @@ git remote set-url origin <url>
 - To set remote of a branch
 ```
 git branch branch_name --set-upstream-to <remote_name/branch_name>
+```
+
+- Push and track a remote branch
+```
+git push --set-upstream <remote_name> <branch_name>
 ```
 
 - To remove upstream tracking of a branch
@@ -360,7 +356,7 @@ git gc --prune=now
 git commit --allow-empty -m "Do an empty commit"
 ```
 
-- Ammend author the last commit
+- Amend author the last commit
 ```
 git commit --amend --author="aakbar5 <16612387+aakbar5@users.noreply.github.com>"
 ```
