@@ -11,6 +11,7 @@
 - `systemctl stop    foo.service` - Stop the service
 - `systemctl disable foo.service` - Uninstall the service
 - `systemctl status  foo.service` - Show status of the service
+- `systemctl --failed` -- Show any failing services
 - `systemctl restart foo.service` - Restart a service
 - `systemctl enable foo.service` - Enable service to auto-run on system boot
 - `systemctl -l --no-pager status foo.service` - Show status of the service
@@ -41,6 +42,7 @@
 - `systemd-analyze dot | dot -Tsvg > services_on_boot.svg` - Plot graph of the services loaded during system boot
 - `systemd-analyze critical-chain` - Show services which are blocking boot process
 - `systemd-analyze` - Show summary of the system boot
+- `systemd-analyze time` - Show summary of the system boot
 
 <a name="sample_service"></a>
 ## Sample service
