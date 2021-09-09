@@ -126,6 +126,11 @@ git remote show <remote>
 git fetch <remote>
 ```
 
+- Re-sync git to remove dead remote tracking and tags
+```
+git fetch --all --prune --prune-tags
+```
+
 - Download changes and merge/integrated into HEAD
 ```
 git pull <remote> <branch>
@@ -144,6 +149,11 @@ git push origin <commit_id_has>:master
 - Push everything
 ```
 git push --all
+```
+- chmod changes
+```
+git diff --summary | grep --color 'mode change 100755 => 100644' | cut -d' ' -f7- | xargs -d'\n' chmod +x
+git diff --summary | grep --color 'mode change 100644 => 100755' | cut -d' ' -f7- | xargs -d'\n' chmod -x
 ```
 
 <a name="stash"></a>
