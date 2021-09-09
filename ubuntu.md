@@ -1,11 +1,14 @@
 # Ubuntu
 - [General commands](#general)
 - [Loop devices](#loop_devices)
-- [Find commands](#find)
 - [DD commands](#dd)
+- [Find commands](#find)
 - [Redirection](#redirection)
 - [Network](#network)
-- [Audio/Video conversion](#av_conversion)
+- [PDF Manipluation](#pdf_manipulation)
+- [Audio Manipulation](#audio_manipulation)
+- [Video Manipulation](#video_manipulation)
+- [Image Manipulation](#image_manipulation)
 
 <a name="general"></a>
 ## General commands
@@ -119,6 +122,15 @@ dd if=/dev/urandom of=/dev/sda bs=16M
 cat /dev/urandom > /dev/fb0
 dd if=/dev/urandom of=/dev/fb0 bs=1024 count=8100
 ```
+
+<a name="curl"></a>
+## cURL commands
+
+- `curl -i -X POST http://localhost:5500/link -F 'image=@image.jpg'` - Upload a file
+
+- `curl -i -X POST http://localhost:5500/link -H "Content-Type: application/json" --data '{"key":"value"}'` - Send json command
+
+- `curl --data "param1=value1&param2=value2" http://localhost:5500/link` - Send data
 
 <a name="find"></a>
 ## Find commands
@@ -237,6 +249,11 @@ iface eth0 inet dhcp
 ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'
 ```
 
+- Show network connection
+```
+route | grep -m1 ^default | awk '{print $NF}'
+```
+
 - Network sockets usage
 ```
 netstat -ltnp | grep -w ':80'
@@ -247,25 +264,41 @@ netstat -ano -p tcp
 sudo netstat -ap | grep 5000
 ```
 
-<a name="av_conversion"></a>
-## Audio/Video conversion
+<a name="pdf_manipulation"></a>
+## PDF Manipulation
 
-- Handy commands to manipulate audio/video files.
+- Remove a page from the pdf
+```
+gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
+  -sPageList=1-3,6- \
+  -sOutputFile=out.pdf in.pdf
+```
 
-### Convert MOV into MP4
+- Split the range of pages from the pdf
 ```
-ffmpeg -i input.mov -codec copy output.mp4
+gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
+   -dFirstPage=22393 -dLastPage=23052 \
+   -sOutputFile=input.pdf \
+   output.pdf
 ```
 
-### Change speed of the video
+- Search text in pdf
 ```
-ffmpeg -i input.mp4 -vf "setpts=speed_multiplier*PTS" output.mp4
+find docs/ '*.pdf' -exec sh -c 'pdftotext "{}" - | grep --with-filename --label="{}" --color "SwapDrawableWithDamage"' \;
+pdftotext my.pdf - | grep 'pattern'
 ```
-- To slow down your video, you have to use a multiplier greater than 1.
 
+- Reduce pdf file
 ```
-ffmpeg -i input.mp4 -vf "setpts=PTS/factor" output.mp4
+convert -density 200x200 -quality 60 -compress jpeg input.pdf output.pdf
 ```
+https://askubuntu.com/a/469255
+
+
+<a name="audio_manipulation"></a>
+## Audio Manipulation
+
+- Handy commands to manipulate audio files.
 
 ### Extract audio track
 - audio track as aac
@@ -283,6 +316,51 @@ ffmpeg -i input.mp4 -vn -f mp3 output.mp3
 ffmpeg -loop 1 -i picture.jpg -i input_audio.mp3 -shortest -c:v libx264 -tune stillimage -c:a copy video.mp4
 ```
 
+### Change audio sample_fmt
+```
+for i in `find . -name "*.wav"`; do echo $(basename $i); ffmpeg -i $i -sample_fmt s16 modify_$(basename $i); done
+```
+
+### Duplicate left channel
+```
+for i in `find . -name "*.wav"`; do echo $(basename $i); ffmpeg -i $i -sample_fmt s16 -filter_complex "channelmap=map=FL-FL|FL-FR:channel_layout=stereo" modify_$(basename $i); done
+```
+
+### Duplicate right channel
+```
+for i in `find . -name "*.wav"`; do echo $(basename $i); ffmpeg -i $i -sample_fmt s16 -filter_complex "channelmap=map=FR-FL|FR-FR:channel_layout=stereo" modify_$(basename $i); done
+```
+- https://trac.ffmpeg.org/wiki/AudioChannelManipulation
+
+
+### wav files into c
+```
+for i in `find . -name "*.wav"`; do echo $(basename $i); xxd -i $(basename $i) > $(basename $i).c; done
+```
+
+### Reduce audio file size
+```
+ffmpeg -i old.mp3 -acodec libmp3lame -ac 2 -ab 64k -ar 44100 new-1.mp3
+```
+
+<a name="video_manipulation"></a>
+## Video Manipulation
+
+### Convert MOV into MP4
+```
+ffmpeg -i input.mov -codec copy output.mp4
+```
+
+### Change speed of the video
+```
+ffmpeg -i input.mp4 -vf "setpts=speed_multiplier*PTS" output.mp4
+```
+- To slow down your video, you have to use a multiplier greater than 1.
+
+```
+ffmpeg -i input.mp4 -vf "setpts=PTS/factor" output.mp4
+```
+
 ### Merge two MP4 files
 ```
 ffmpeg -i concat:"input1.mp4|input2.mp4" output.mp4
@@ -298,7 +376,7 @@ ffmpeg -i input.mp4 -an output.mp4
 ffmpeg -i input.mp4 -vf transpose=1 output.mp4
 ```
 
-## Reduce video size
+### Reduce video size
 - Change quality of the video
 ```
 ffmpeg -i input.mp4 -c:v libx264 -crf 18 -c:a copy output.mp4
@@ -323,15 +401,13 @@ ffmpeg -i input.mp4 -vf "scale=iw/2:ih/2" output.mp4
 ffmpeg -i input.mp4 -c copy -ss 00:03:22.0 -to 00:08:49.0 output.mp4
 ```
 
-## Embed subtitles
+### Embed subtitles
 ```
 ffmpeg -i input.mp4 -vf "subtitles=lyrics.srt:force_style='FontName=DejaVu Serif,FontSize=24'" output.mp4
 ```
 
-### Reduce audio file size
-```
-ffmpeg -i old.mp3 -acodec libmp3lame -ac 2 -ab 64k -ar 44100 new-1.mp3
-```
+<a name="image_manipulation"></a>
+## Image Manipulation
 
 ### Convert JPG to PNG
 ```
@@ -349,17 +425,17 @@ ffmpeg -i input.mp4 output_%02d.png
 ffmpeg -vcodec png -i test1.png -vcodec rawvideo -f rawvideo -pix_fmt rgb565 test1.data
 ```
 
-## Convert RAW data image format to PNG
+### Convert RAW data image format to PNG
 ```
 ffmpeg -f rawvideo -pixel_format rgba -video_size 1920x1080 -i input.data test.png
 ```
 
-## Convert PNGs to video
+### Convert PNGs to video
 ```
 ffmpeg -framerate 1/5 -c:v libx264 -r 30 -pix_fmt yuv420p -i *%03d.png output.mp4
 ```
 
-## Darken the images
+### Darken the images
 - B & W image
 ```
 for i in `find . -name "*.jpg"`; do convert $i -normalize -threshold 80% $i; done

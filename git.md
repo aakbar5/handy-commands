@@ -3,7 +3,6 @@
 ## Table of Contents
 - [Repo config](#repo_config)
 - [Log viewing](#log_viewing)
-- [Repo Cleanup](#repo_cleanup)
 - [Tags](#tags)
 - [Branches](#branches)
 - [Remote tracking](#remote_tracking)
@@ -15,6 +14,10 @@
 
 <a name="repo_config"></a>
 ## Repo config
+- `git config --list` - Show configuration
+- `git config --list --local` - Show configuration of the local repo
+- `git config --list --show-origin` - Show configuration and the config file setting up
+
 - View user and email used for git commit
 ```
 git config user.name
@@ -27,6 +30,14 @@ git config user.name "<user-name>"
 git config user.email "<user-email-address>"
 ```
 
+- Reduce time consumed by `git log`
+```
+git config --global core.commitGraph true
+git config --global gc.writeCommitGraph true
+cd /path/to/repo
+git commit-graph write
+```
+
 <a name="log_viewing"></a>
 ## Log viewing
 - Simple view
@@ -36,14 +47,6 @@ git config user.email "<user-email-address>"
 - Log with date/time + author
 `git log --graph --decorate --abbrev-commit --pretty=format:"%C(cyan)%h %C(yellow)%ad%Cred%d %Cgreen [%an:%ae] %Creset%s" --decorate --date=iso`
 ![git_date_log](resources/git_date_log.png)
-
-<a name="repo_cleanup"></a>
-## Repo Cleanup
-```
-git reflog expire --expire=now --all
-git gc --prune=now
-git stash clear
-```
 
 <a name="tags"></a>
 ## Tags
@@ -126,6 +129,11 @@ git remote show <remote>
 git fetch <remote>
 ```
 
+- Re-sync git to remove dead remote tracking and tags
+```
+git fetch --all --prune --prune-tags
+```
+
 - Download changes and merge/integrated into HEAD
 ```
 git pull <remote> <branch>
@@ -144,6 +152,11 @@ git push origin <commit_id_has>:master
 - Push everything
 ```
 git push --all
+```
+- chmod changes
+```
+git diff --summary | grep --color 'mode change 100755 => 100644' | cut -d' ' -f7- | xargs -d'\n' chmod +x
+git diff --summary | grep --color 'mode change 100644 => 100755' | cut -d' ' -f7- | xargs -d'\n' chmod -x
 ```
 
 <a name="stash"></a>
@@ -294,10 +307,10 @@ git config user.email "git-hub-email-visible-to-others"
 
 <a name="cleanup"></a>
 ## Repo cleanup
-
 ```
 git reflog expire --expire=now --all
 git gc --prune=now
+git stash clear
 ```
   -or-
 ```
