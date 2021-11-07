@@ -1,8 +1,8 @@
 # Ubuntu
 - [General commands](#general)
 - [Loop devices](#loop_devices)
-- [Find commands](#find)
 - [DD commands](#dd)
+- [Find commands](#find)
 - [Redirection](#redirection)
 - [Network](#network)
 - [PDF Manipluation](#pdf_manipulation)
@@ -123,6 +123,15 @@ cat /dev/urandom > /dev/fb0
 dd if=/dev/urandom of=/dev/fb0 bs=1024 count=8100
 ```
 
+<a name="curl"></a>
+## cURL commands
+
+- `curl -i -X POST http://localhost:5500/link -F 'image=@image.jpg'` - Upload a file
+
+- `curl -i -X POST http://localhost:5500/link -H "Content-Type: application/json" --data '{"key":"value"}'` - Send json command
+
+- `curl --data "param1=value1&param2=value2" http://localhost:5500/link` - Send data
+
 <a name="find"></a>
 ## Find commands
 
@@ -238,6 +247,11 @@ iface eth0 inet dhcp
 - Show IP address assigned to eth0
 ```
 ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'
+```
+
+- Show network connection
+```
+route | grep -m1 ^default | awk '{print $NF}'
 ```
 
 - Network sockets usage
