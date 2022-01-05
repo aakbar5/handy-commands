@@ -3,7 +3,6 @@
 ## Table of Contents
 - [Repo config](#repo_config)
 - [Log viewing](#log_viewing)
-- [Repo Cleanup](#repo_cleanup)
 - [Tags](#tags)
 - [Branches](#branches)
 - [Remote tracking](#remote_tracking)
@@ -36,14 +35,6 @@ git config user.email "<user-email-address>"
 - Log with date/time + author
 `git log --graph --decorate --abbrev-commit --pretty=format:"%C(cyan)%h %C(yellow)%ad%Cred%d %Cgreen [%an:%ae] %Creset%s" --decorate --date=iso`
 ![git_date_log](resources/git_date_log.png)
-
-<a name="repo_cleanup"></a>
-## Repo Cleanup
-```
-git reflog expire --expire=now --all
-git gc --prune=now
-git stash clear
-```
 
 <a name="tags"></a>
 ## Tags
@@ -308,6 +299,7 @@ git config user.email "git-hub-email-visible-to-others"
 ```
 git reflog expire --expire=now --all
 git gc --prune=now
+git stash clear
 ```
   -or-
 ```
