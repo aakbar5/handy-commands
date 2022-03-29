@@ -21,19 +21,18 @@
     - [Changing case](#changing-case)
     - [Comparison](#comparison)
     - [Substitution](#substitution)
-- [Using builtin `-z` and `-n` operator](#using-builtin--z-and--n-operator)
+- [Using builtin -z and -n operator](#using-builtin--z-and--n-operator)
     - [For string](#for-string)
     - [For variables](#for-variables)
 - [File path manipulation](#file-path-manipulation)
 - [Variable substitution](#variable-substitution)
-    - [`${parameter:-word}`](#parameter-word)
-    - [`${parameter-word}`](#parameter-word)
-    - [`${parameter:=word}`](#parameterword)
-    - [`${parameter=word}`](#parameterword)
+    - [${parameter:-word}](#parameter-word)
+    - [${parameter-word}](#parameter-word)
 - [Invoking script](#invoking-script)
 - [Random number](#random-number)
 - [Function](#function)
 - [Global and local variables](#global-and-local-variables)
+- [getopts](#getopts)
 
 <!-- /TOC -->
 
@@ -371,7 +370,7 @@ esac
 
 - use compound statement to execute multiple commands
 ```
-[ -f asad.txt ] && { echo "first command"; cat "second command"; }
+[ -f sample.txt ] && { echo "first command"; cat "second command"; }
 ```
 
 
@@ -661,6 +660,7 @@ fi
 > `String are not equal` \
 > `String are equal`
 
+See [Compound statement](#compound-statement)
 
 ```bash
 # You can skip any part
@@ -818,27 +818,33 @@ https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18
 ```bash
 var=10
 echo ${var:-20} # Use 20; if var is not set or null
-echo ${var} # Var is empty
 ```
+> 10
+
+```bash
+echo ${var:-20} # Use 20 as var is null
+```
+> 20
+
+```bash
+var=
+echo ${var:-20} # Use 20 as var is null
+```
+> 20
 
 ## `${parameter-word}`
 ```bash
-echo ${var-20} # Use 20; if var is not set or null
-echo ${var}  # Var is empty
+echo ${var-20} # Use 20 as var is not declared
 ```
+> 20
 
-## `${parameter:=word}`
 ```bash
-echo ${var:=20} # Set 20; if var is not set or null
-echo ${var}  # Var is empty
+var=
+echo ${var-20} # 20 will not be used as var is declared
 ```
+>
 
-## `${parameter=word}`
-```bash
-echo ${var=30} # Set 30; if var is not set or null
-echo ${var}  # Var is empty
-```
-
+NOTE: `${var:-20}` vs `${var:20}` - Funtionality wise both are same. `:` is forcing to set the value by `20` even if variable is declared but no value is being assigned.
 
 # Invoking script
 - Invoking another script (as a separate process) from within script
@@ -892,7 +898,7 @@ Generate numbers b/w 100-250.
 ```bash
 var=10
 function test() {
-  var=20 # Global var has been modified       
+  var=20 # Global var has been modified
   echo "var in test = $var"
 }
 
@@ -923,3 +929,9 @@ Output will be like following:
 var in test = 20
 var in main = 10
 ```
+
+# getopts
+[getopts usage](https://gist.github.com/aakbar5/e2cf511c5844929afc849cf0fda46296)
+
+- If `:` is not found at the start of the argument list, `getopts` does not perform any error checking. Otherwise error will be reported on having unkown option or paramter.
+- `getopts` does not handle long options (`--long`). `getopt` can do the job however it is not built-in functionality of the Bourne shell.
