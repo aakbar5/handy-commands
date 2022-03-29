@@ -9,11 +9,6 @@
 - [Image backup](#image_backup)
 - [Registry -- push](#registry_push)
 - [Extract container info](#extract_container_info)
-- [Workflow # 1](#workflow_1)
-- [Workflow # 2](#workflow_2)
-- [Workflow # 3](#workflow_3)
-- [Workflow # 4](#workflow_4)
-- [Workflow # 5](#workflow_5)
 - [Errors](#errors)
 
 <a name="background"></a>
@@ -33,7 +28,7 @@
 - `docker version` - print docker version
 - `docker info` OR `docker system info` - print detailed info related to docker installation
 - `docker info --format "{{json .}}" | jq -C .` - print detailed info related to docker installation in JSON format
-- Following commands can be used to extract a specific JSON node from docker info 
+- Following commands can be used to extract a specific JSON node from docker info
 ```
 docker info --format "{{json .Plugins}}" | jq -C .
 docker info --format "{{json .RegistryConfig}}" | jq -C .
@@ -67,19 +62,31 @@ docker info --format "{{json .MemTotal}}" | jq -C .
 - `docker rm $(docker container ls --all --quiet)` - Remove all containers
 - `docker rm $(docker container ls --quiet --filter "status=exited")` - Remove containers which are in exited state
 - `docker commit container-name_OR_container-id` - Command to save modified contents back to image otherwise modifications will be lost on stopping container
-- `docker create --interactive --tty --name container-name image-name bash` - Create a docker container from image; It's entry point point is set to bash shell
+- `docker create --interactive --tty --name container-name image-name /bin/bash` - Create a docker container from image; It's entry point point is set to bash shell
 - `docker start --interactive --attach container-name` - Re-start container which previously exited and an open interactive shell
 - `docker stop container-name` - Stop a docker
-- `docker run <OPTIONS> --interactive --tty image-name /bin/bash` - Create a container from the specified image and open an interactive shell
-      <OPTIONS>
-      - `--security-opt seccomp:unconfined` - container with security relaxation
-      - `--volume /path/to/folder/on/host:/path/to/folder/in/container` - map host folder into container env
-      - `--rm` - Remove container once interactive shell has been closed
+- `docker run <OPTIONS> --interactive --tty image-name /bin/bash` - Create a container from the specified image and open an interactive shell. `<OPTIONS>` are:
+  - `--security-opt seccomp:unconfined` - container with security relaxation
+  - `--volume /path/to/folder/on/host:/path/to/folder/in/container` - map host folder into container env
+  - `--rm` - Remove container once interactive shell has been closed
 
+- `docker run --rm -it -v ``pwd``:/mapped image-name:tag /bin/bash` - Create/run a container from the specified image and mapped current dir to `/mapped` inside the docker
 - `docker run --interactive --detach --name container-name image-name` - Run docker container and de-attach mode
 - `docker run -it --entrypoint /bin/bash <image>` - Simple docker run command does not work if specified image has a defined ENTRYPOINT.
 - `docker tag <old-repo-name:old-tag-name> <new-repo-name:new-tag-name>` - Rename docker image
 - `docker rename <old-name> <new-name>` - Rename docker container
+
+- Attach multiple shell to a running container.
+  - `docker exec --interactive --tty container-id bash`
+  OR
+  - `docker exec --interactive --tty container-id /bin/bash -c "export TERM=xterm; exec bash"`
+  - Shell without tty width restriction.
+
+:information_source:
+Put following in Dockerfile to have shell without width restriction.
+```
+echo "export TERM=xterm" >> /etc/bash.bashrc
+```
 
 <a name="inspect"></a>
 ## Container inspection
@@ -130,69 +137,6 @@ docker push <docker-registry-host>/<image-name>
 - Commands to extract Docker container hostname, ip and full Docker Id
 https://gist.github.com/aakbar5/8ac6f4447dbb25c7e443dfa88aa9a69e
 
-<a name="workflow_1"></a>
-## Workflow # 1
-
-Create a docker image.
-
-- `mkdir docker-project`
-- `cd docker-project`
-- `touch Dockerfile` - Create docker specification file
-- Put commands in Dockerfile
-```
-# Set the base image
-FROM ubuntu:16.04
-```
-
-- `docker build --tag image-name:tag .` - Build a docker image
-- `docker run --rm -it -v `pwd`:/mapped image-name:tag /bin/bash` - Create/run a container from the specified image
-- `exit`-- Exit from the docker container
-
-<a name="workflow_2"></a>
-## Workflow # 2
-
-Create a container from existing backup image.
-
-- docker load   -- `docker load --input image-name-backup.tar`
-- docker create -- `docker create --interactive --tty --name container-name image-name /bin/bash`
-- docker start  -- `docker start --interactive --attach container-name`
-
-<a name="workflow_3"></a>
-## Workflow # 3
-
-Rename a docker image.
-
-- docker tag -- `docker tag old_repo:tag new_repo:new_tag`
-- docker remove image -- `docker rmi old_repo`
-
-<a name="workflow_4"></a>
-## Workflow # 4
-
-Backup a docker container.
-
-- `docker container ls` - Check container is running
-- `docker commit --pause container-name image-name` - Issue commit command to save state of running container to an image
-- `docker save --output image-name-backup.tar image-name` - Save docker image to .tar file.
-
-`NOTE: docker export command can also used to save running/paused container.`
-
-<a name="workflow_5"></a>
-## Workflow # 5
-
-Attach multiple shell to a running container.
-
-- `docker exec --interactive --tty container-id bash`
-
-OR
-
-- `docker exec --interactive --tty container-id /bin/bash -c "export TERM=xterm; exec bash"`
- - Shell without tty width restriction.
-
-:information_source:
-Put following in Dockerfile to have shell without width restriction.
-```
-echo "export TERM=xterm" >> /etc/bash.bashrc
-```
 
 <a name="errors"></a>
 ## Errors
@@ -207,4 +151,4 @@ See 'docker run --help'.
 sudo groupadd docker
 sudo usermod -a -G docker $USER
 ```
-Logout and login again to use docker without sudo.
+Logout and login again to use docker without `sudo`.

@@ -19,19 +19,19 @@
 - `git config --list --show-origin` - Show configuration and the config file setting up
 
 - View user and email used for git commit
-```
+```bash
 git config user.name
 git config user.email
 ```
 
 - To set user + email
-```
+```bash
 git config user.name "<user-name>"
 git config user.email "<user-email-address>"
 ```
 
 - Reduce time consumed by `git log`
-```
+```bash
 git config --global core.commitGraph true
 git config --global gc.writeCommitGraph true
 cd /path/to/repo
@@ -76,85 +76,87 @@ git push origin :refs/tags/<old_tag_name>
 
 - To view remote tracking of the branches
   * simple command
-    ```
+    ```bash
     git branch -rvv
     ```
   * more detailed view
-    ```
+    ```bash
     git remote show origin
     ```
 
 - List all currently configured remotes
-```
+```bash
 git remote -v
 ```
 
 - To set remote of a repository
-```
+```bash
 git remote add <remote_name> <url>
 ```
 
 - To remove a remote
-```
+```bash
 git remote rm <remote_name>
 ```
 
 - To set/change URL for a remote
-```
+```bash
 git remote set-url origin <url>
 ```
 
 - To set remote of a branch
-```
+```bash
 git branch branch_name --set-upstream-to <remote_name/branch_name>
 ```
 
 - Push and track a remote branch
-```
+```bash
 git push --set-upstream <remote_name> <branch_name>
 ```
 
 - To remove upstream tracking of a branch
-```
+```bash
 git branch --unset-upstream <branch_name>
 ```
 
 - Show information about a remote
-```
+```bash
 git remote show <remote>
 ```
 
 - Download all changes from remote but don't merged into HEAD
-```
+```bash
 git fetch <remote>
 ```
 
 - Re-sync git to remove dead remote tracking and tags
-```
+```bash
 git fetch --all --prune --prune-tags
 ```
 
+  - The `--prune` option tells Git to remove all remote-tracking references.
+
 - Download changes and merge/integrated into HEAD
-```
+```bash
 git pull <remote> <branch>
 ```
 
 - Push local commits to remote
-```
+```bash
 git push <remote> <branch>
 ```
 
 - Push a specific commit id to remote
-```
+```bash
 git push origin <commit_id_has>:master
 ```
 
 - Push everything
-```
+```bash
 git push --all
 ```
 - chmod changes
-```
+```bash
 git diff --summary | grep --color 'mode change 100755 => 100644' | cut -d' ' -f7- | xargs -d'\n' chmod +x
 git diff --summary | grep --color 'mode change 100644 => 100755' | cut -d' ' -f7- | xargs -d'\n' chmod -x
 ```
@@ -182,40 +184,40 @@ Temporarily saves changes of half-done work.
 ## Submodule
 
 - Initialize local repo for a new submodule
-```
+```bash
 git submodule init
 git submodule status
 ```
 
 - Add a new repo as a submodule
-```
+```bash
 git submodule add -f link-to-new-repo path/to/folder/to/checkout/repo
 ```
 
 - Clone a repo having submodule(s)
-```
+```bash
 git clone --recurse-submodules link-to-repo
 ```
 
 - Fetch submodule in an already cloned repo
-```
+```bash
 git submodule update --init --recursive
 ```
 
 - Check out the master and update all submodules
-```
+```bash
 git submodule foreach --recursive git checkout master
 git submodule foreach --recursive git pull
 ```
 
 - Pull/fetch changes for submodules
-```
+```bash
 git submodule foreach --recursive git checkout master
 git submodule foreach --recursive git pull
 ```
 
 - Remove a submodule
-```
+```bash
 git submodule deinit path/to/folder/having/repo/as/submodule
 git rm path/to/folder/having/repo/as/submodule
 ```
@@ -231,13 +233,13 @@ https://help.github.com/articles/connecting-to-github-with-ssh/
 Let's manage two git accounts where first one is treated as a primary one.
 
 - Create a folder to have ssh keys
-```
+```bash
 mkdir -p ~/.ssh
 chmod u+rwx ~/.ssh
 ```
 
 - Create key for primary user
-```
+```bash
 ssh-keygen -t rsa -b 4096 -C "primary_user@primary.com" -f ~/.ssh/id_rsa_primary
 ```
   * After entering yoru passphrase, two files will be generated:
@@ -245,7 +247,7 @@ ssh-keygen -t rsa -b 4096 -C "primary_user@primary.com" -f ~/.ssh/id_rsa_primary
    - `Your public key has been saved in ~/.ssh/id_rsa_primary.pub.`
 
 - Create key for secondary user
-```
+```bash
 ssh-keygen -t rsa -b 4096 -C "secondary_user@secondary.com" -f ~/.ssh/id_rsa_secondary
 ```
   * After entering yoru passphrase, two files will be generated:
@@ -253,17 +255,17 @@ ssh-keygen -t rsa -b 4096 -C "secondary_user@secondary.com" -f ~/.ssh/id_rsa_sec
    - `Your public key has been saved in ~/.ssh/id_rsa_secondary.pub.`
 
 - Start the ssh-agent in the background.
-```
+```bash
 eval "$(ssh-agent -s)"
 ```
 
 - View active keys
-```
+```bash
 ssh-add -L
 ```
 
 - Add above generated SSH private key(s) to the ssh-agent
-```
+```bash
 ssh-add ~/.ssh/id_rsa_primary
 ssh-add ~/.ssh/id_rsa_secondary
 ```
@@ -271,18 +273,18 @@ ssh-add ~/.ssh/id_rsa_secondary
 - To test ssh key with github.com: `ssh -T git@github.com`
 
 - Copy above generated SSH private key(s) to the clipboard
-```
+```bash
 xclip -sel clip < ~/.ssh/id_rsa_primary.pub
 xclip -sel clip < ~/.ssh/id_rsa_secondar.pub
 ```
 
 - Set configuration file to manage both accounts.
-```
+```bash
 touch ~/.ssh/config
 ```
 
 - Add following texts in the above created `~/.ssh/config` file:
-```
+```bash
 Host github-primary
   HostName github.com
   User git
@@ -295,25 +297,25 @@ Host github-secondary
 ```
 
 - Now to checkout a repo against a specific user:
-```
+```bash
 git clone github-secondary:git-hub-user-name/repo-name
 ```
 
 - Config user name and email as per your github account:
-```
+```bash
 git config user.name "git-hub-user-name"
 git config user.email "git-hub-email-visible-to-others"
 ```
 
 <a name="cleanup"></a>
 ## Repo cleanup
-```
+```bash
 git reflog expire --expire=now --all
 git gc --prune=now
 git stash clear
 ```
   -or-
-```
+```bash
 git fsck --unreachable
 git reflog expire --expire=0 --all
 git repack -a -d -l
@@ -325,28 +327,28 @@ git gc --aggressive --prune=now
 ## Misc
 
 - Count number of commits b/w two commits
-```
+```bash
 git log starthash..endhash --pretty=oneline | wc -l
 ```
 
 - List un-tracked files
-```
+```bash
 git ls-files . --exclude-standard --others
 ```
 
 - List ignored files
-```
+```bash
 git ls-files --exclude-standard --others --ignored
 ```
 
 - List ignored files in a specific directory
-```
+```bash
 git ls-files --exclude-standard --others --ignored --directory </path/to/directory>
 ```
 
 - Remove a file from history (Becareful: It will change git hash values.)
 
-```
+```bash
 git filter-branch -f --index-filter "git rm -rf --cached --ignore-unmatch path/to/file-or-folder/to/be/removed" HEAD
 
 # Remove backup
@@ -365,12 +367,12 @@ git gc --prune=now
   `git ls-files --deleted -z | xargs -0 git rm`
 
 - Create empty commit
-```
+```bash
 git commit --allow-empty -m "Do an empty commit"
 ```
 
 - Amend author the last commit
-```
+```bash
 git commit --amend --author="aakbar5 <16612387+aakbar5@users.noreply.github.com>"
 ```
 
@@ -378,11 +380,16 @@ git commit --amend --author="aakbar5 <16612387+aakbar5@users.noreply.github.com>
     - Now use `git am *.patch` command to apply patches.
 
 - Update your forked repo with the original repo
-```
+```bash
 git checkout <local-branch>
 git remote -v
 git remote add upstream </path/to/original/repo>
 git remote -v
 git fetch upstream
 git merge upstream/branch-name
+```
+
+- To fix git mode changes (old mode 100644 -> new mode 100755)
+```bash
+git ls-files -m | xargs -L 1 chmod 644
 ```

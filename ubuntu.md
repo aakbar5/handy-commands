@@ -288,7 +288,7 @@ find docs/ '*.pdf' -exec sh -c 'pdftotext "{}" - | grep --with-filename --label=
 pdftotext my.pdf - | grep 'pattern'
 ```
 
-- Reduce pdf file
+- Reduce pdf file size
 ```
 convert -density 200x200 -quality 60 -compress jpeg input.pdf output.pdf
 ```
@@ -300,23 +300,28 @@ https://askubuntu.com/a/469255
 
 - Handy commands to manipulate audio files.
 
+### Swap audio channels
+https://trac.ffmpeg.org/wiki/AudioChannelManipulation
+
 ### Extract audio track
-- audio track as aac
+
+- Audio track as aac
 ```
 ffmpeg -i input.mp4 -vn -acodec copy audio.aac
 ```
-- audio track as mp3
+
+- Audio track as mp3
 ```
 ffmpeg -i input.mp4 -vn -f mp3 output.mp3
 ```
 
-### audio track + picture = video
+### Audio track + picture = video
 - Convert mp3 file to audio with a picture
 ```
 ffmpeg -loop 1 -i picture.jpg -i input_audio.mp3 -shortest -c:v libx264 -tune stillimage -c:a copy video.mp4
 ```
 
-### Change audio sample_fmt
+### Change audio `sample_fmt`
 ```
 for i in `find . -name "*.wav"`; do echo $(basename $i); ffmpeg -i $i -sample_fmt s16 modify_$(basename $i); done
 ```
@@ -414,12 +419,6 @@ ffmpeg -i input.mp4 -vf "subtitles=lyrics.srt:force_style='FontName=DejaVu Serif
 for file in *.jpg; do convert "${file%%.*}".jpg "${file%%.*}".png; done
 ```
 
-### Convert video to PNG
-```
-ffmpeg -i input.mp4 output_%02d.png
-```
-- `-r 1.0` - Pass to above command to capture frame after 1 seconds instead of all.
-
 ### Convert PNG to RGB565
 ```
 ffmpeg -vcodec png -i test1.png -vcodec rawvideo -f rawvideo -pix_fmt rgb565 test1.data
@@ -430,10 +429,44 @@ ffmpeg -vcodec png -i test1.png -vcodec rawvideo -f rawvideo -pix_fmt rgb565 tes
 ffmpeg -f rawvideo -pixel_format rgba -video_size 1920x1080 -i input.data test.png
 ```
 
+### Convert Planner RGB data image to PNG
+```
+convert -depth 8 -interlace plane -size 100x100 rgb:input.data output.png
+```
+
+NOTE: ffmpeg got a complicated command.
+
+### Convert PNG image to YUV format
+```
+ffmpeg -i test.png -pix_fmt nv12 test.yuv
+```
+
+### Convert video to PNG
+```
+ffmpeg -i input.mp4 output_%02d.png
+```
+- `-r 1.0` - in above command will ask to capture frame after 1 seconds instead of all.
+
 ### Convert PNGs to video
+
+- Single image to video of 1 minute length and specific video format
 ```
-ffmpeg -framerate 1/5 -c:v libx264 -r 30 -pix_fmt yuv420p -i *%03d.png output.mp4
+ffmpeg -loop 1 -i test.png -vf format=yuv420p -r 60 -t 60 output.mp4
 ```
+
+- Multiple images to a video 
+```
+ffmpeg -framerate 60 -i image-%02d.png -vf format=yuv420poutput.mp4
+```
+- Input png are named: `input_01.png` `input_02.png` ... `input_10.png`
+- `output.mp4` will have frame rate of 25fps
+- Each image will be shown for 1/25
+
+```
+ffmpeg -framerate 1/5 -i image-%02d.png -vf format=yuv420p output.mp4
+ffmpeg -framerate 1/5 -i input_%02d.png -vf format=yuv420p -r 60 test.mp4
+```
+- Show each input image for at least 5 seconds
 
 ### Darken the images
 - B & W image
