@@ -342,6 +342,8 @@ esac
 # -f can be only be used to check existence of a file
 [[ -f "/path/to/folder" ]]      && echo "Directory is there" || echo "Directory is not there"
 [[ -f "/path/to/folder/file" ]] && echo "File is there"      || echo "File is not there"
+[[ -f "/path/to/folder/file" ]] || echo "File is not there"
+[[ -f "/path/to/folder/file" ]] || { echo "File is not there"; exit 1; }
 
 # Use -d for directory
 [[ -d "/path/to/folder" ]]      && echo "Directory is there" || echo "Directory is not there"
@@ -375,7 +377,7 @@ esac
 
 # Loops
 
-- while loop (for every)
+- while loop (for ever)
 ```
 while true; do echo "hello"; sleep 2; done
 ```
@@ -469,7 +471,7 @@ done
 > `loop with seq expr # 5`
 
 
-- For loop to iterate over word list
+- `for` loop to iterate over word list
 ```bash
 words="word1 word2 word3"
 for word in $words; do
@@ -480,8 +482,14 @@ done
 > `word2` \
 > `word3`
 
+```bash
+for word in word1 word2 word3; do echo "$word"; done
+```
+> `word1` \
+> `word2` \
+> `word3`
 
-- For loop to iterate over word list
+- `for` loop to iterate over word list
 ```bash
 words="
 word1
@@ -499,7 +507,7 @@ done
 > `word5`
 
 
-- For loop to iterate an array
+- `for` loop to iterate an array
 ```bash
 # Declare an array variable
 declare -a list=(
