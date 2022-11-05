@@ -8,6 +8,7 @@
 - [Arrays](#arrays)
     - [Indexed](#indexed)
     - [Associative](#associative)
+- [Array 2D](#array-2d)
 - [Arithmetics](#arithmetics)
     - [Simple](#simple)
     - [Using let](#using-let)
@@ -36,6 +37,7 @@
 - [Function](#function)
 - [Global and local variables](#global-and-local-variables)
 - [getopts](#getopts)
+- [Read a file](#read-a-file)
 
 <!-- /TOC -->
 
@@ -291,6 +293,28 @@ done
 > `animal: lion`
 > `location: african`
 > `group: pride`
+
+# Array 2D
+```bash
+declare -A matrix
+matrix[0,0]='00'
+matrix[0,1]='01'
+matrix[1,0]='10'
+matrix[1,1]='11'
+
+num_rows=2
+num_columns=2
+
+for ((x=0;x<num_rows;x++)) do
+  for ((y=0;y<num_columns;y++)) do
+    echo "$x,$y = ${matrix[$x,$y]}"
+  done
+done
+```
+> `0,0 = 00`
+> `0,1 = 01`
+> `1,0 = 10`
+> `1,1 = 11`
 
 
 # Arithmetics
@@ -1039,3 +1063,11 @@ var in main = 10
 
 - If `:` is not found at the start of the argument list, `getopts` does not perform any error checking. Otherwise error will be reported on having unkown option or paramter.
 - `getopts` does not handle long options (`--long`). `getopt` can do the job however it is not built-in functionality of the Bourne shell.
+
+# Read a file
+```bash
+FILE='test.txt'
+while read LINE; do
+  echo $LINE
+done < $FILE
+```
