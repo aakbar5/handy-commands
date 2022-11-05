@@ -5,6 +5,9 @@
 - [Special variables](#special-variables)
 - [Sleep](#sleep)
 - [Variables](#variables)
+- [Arrays](#arrays)
+    - [Indexed](#indexed)
+    - [Associative](#associative)
 - [Arithmetics](#arithmetics)
     - [Simple](#simple)
     - [Using let](#using-let)
@@ -115,60 +118,179 @@ cvar='a'
 svar="bash"
 ```
 
-- Declare an array - zero index based array
+# Arrays
+There are two types of arrays
+
+## Indexed
+- Integers can be used to refernece an element
+- Zero based
+- Syntax: `declare -a array`
+
+
+- Declare an empty list
+```bash
+declare -a arr=()
+
+echo "Size of array: ${#arr[@]}"
+```
+> `Size of array: 0`
+
+
+- Declare an array with two elements
+```bash
+declare -a arr
+arr[0]="entry0"
+arr[1]="entry1"
+
+echo "Size of array: ${#arr[@]}"
+```
+> `Size of array: 2`
+
+
+- Declare an array with two elements
+```bash
+declare -a arr=("entry0" "entry1")
+
+echo "Size of array: ${#arr[@]}"
+```
+> `Size of array: 2`
+
+
+- Declare an array with two elements
+```bash
+arr=("entry0" "entry1")
+```
+> `Size of array: 2`
+
+
+- Append a new element to the array
+```bash
+declare -a arr=("entry0" "entry1")
+arr+=("entry2")
+
+echo "Size of array: ${#arr[@]}"
+```
+> `Size of array: 3`
+
+
+- Declare an array: zero index based array
 ```bash
 iarray=( 10 20 30 40 50 )
 ```
 
-```bash
-echo ${iarray[1]}  # Access element at index # 1
-```
-> `20`
-
-```bash
-iarray[4]=60  # Write a new value at index # 4
-```
-
-```bash
-echo ${#iarray[@]} # Show number of elements in array
-```
-> `5`
-
-```bash
-echo ${#iarray}     # Show length of the first element
-echo ${#iarray[1]}  # Show length of the second element
-```
-> `2` \
-> `2`
-
-```bash
-echo ${iarray[@]} # Show all elements of the array
-```
-> `10 20 30 40 50`
-
-```bash
-echo ${iarray[@]:1:3} # Show all elements of the array b/w the range
-```
-> `20 30 40`
-
-```bash
-iarray=( ${iarray[@]} 60 )  # Add new element at the array
-echo ${iarray[@]} # Show all elements of the array
-```
-> `10 20 30 40 50 60`
-
-```bash
-unset iarray[5] # Remove element # 5
-echo ${iarray[@]} # Show all elements of the array
-```
-> `10 20 30 40 50`
-
+- Array manipulations
 ```bash
 iarray=( 10 20 30 40 50 )
+
+echo "Count: ${#iarray[@]}" # Show number of elements in the array
+echo "Elems: ${iarray[@]}" # Show all elements of the array
+echo "Sub elems: ${iarray[@]:1:3}" # Show all elements of the array b/w the range
+```
+> `Count: 5`
+> `Elems: 10 20 30 40 50`
+> `Sub elems: 20 30 40`
+
+
+- Iterate over the array
+```bash
+for ((i=0; i < ${#iarray[@]}; ++i)); do
+  echo "Index # $i: ${iarray[i]}"
+done
+```
+> `Index # 0: 10`
+> `Index # 1: 20`
+> `Index # 2: 30`
+> `Index # 3: 40`
+> `Index # 4: 50`
+
+
+- Remove a specific element from the array
+```bash
+iarray=( 10 20 30 40 50 )
+
+unset iarray[2] # Remove element # 2
+echo ${iarray[@]} # Show all elements of the array
+```
+
+- Assign sub-elements to a new array
+```bash
+iarray=( 10 20 30 40 50 )
+
 iarr=("${iarray[@]:1:3}") # Assign elements # 1,2,3 of iarray to iarr
-echo ${iarr[@]}
+echo ${iarr[@]} # Show all elements of the array
 ```
+
 > `20 30 40`
+
+
+## Associative
+- Use arbitrary strings
+- Syntax: `declare -A array`
+
+``bash
+declare -A aarr
+aarr[animal]=lion
+aarr[location]=African
+```
+
+# Add new key
+```bash
+aarr+=([group]=Pride)
+```
+
+```bash
+echo "Count: ${#aarr[@]}" # Show number of elements in the array
+echo "Elems: ${aarr[@]}" # Show all elements of the array
+```
+> `Count: 3`
+> `Elems: lion african pride`
+
+
+- Iterate keys of the array
+```bash
+for key in "${!aarr[@]}"; do
+  echo "Key # $key";
+done
+```
+> `Key # animal`
+> `Key # location`
+> `Key # group`
+
+
+- Show all keys
+```bash
+echo "${!aarr[@]}"
+```
+> `animal location group`
+
+
+-  Iterate values of the array
+```bash
+for val in "${aarr[@]}"; do
+  echo "Value # $val";
+done
+```
+> `Value # lion`
+> `Value # african`
+> `Value # pride`
+
+
+- Show all values
+```bash
+echo "${assArray1[@]}"
+```
+> `lion african pride`
+
+
+- Iterate array in key-value pair
+```bash
+for key in "${!aarr[@]}"; do
+ echo "$key: ${aarr[$key]}";
+done
+```
+> `animal: lion`
+> `location: african`
+> `group: pride`
 
 
 # Arithmetics
@@ -504,24 +626,6 @@ done
 > `word3` \
 > `word4` \
 > `word5`
-
-
-- `for` loop to iterate an array
-```bash
-# Declare an array variable
-declare -a list=(
-               "entry1"
-               "entry2"
-               "entry3"
-               "entry4"
-               "entry5"
-               )
-
-# Iterate through the array (zero index based array)
-for ((i=0; i < ${#list[@]}; ++i)); do
-     echo "Index # $i: ${list[i]}"
-done
-```
 
 
 # String manipulation
