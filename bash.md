@@ -1,5 +1,8 @@
+# Bash
+
 <!-- TOC -->
 
+- [Bash](#bash)
 - [Comments](#comments)
 - [Echo](#echo)
 - [Special variables](#special-variables)

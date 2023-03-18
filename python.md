@@ -1,4 +1,5 @@
-# Table of Contents
+# python
+
 - [Pip](#pip)
 - [Python](#python)
 - [Python-config](#python_config)
@@ -10,15 +11,16 @@
 <a name="pip"></a>
 ## Pip
 
-- `pip list` - Show list of installed packages
-- `pip list --outdated --format=freeze` - Show list of outdated installed packages
-- `pip install --upgrade <pip-package-name>` - Upgrade a package
-- `pip install "package>=0.2,<0.3"` - Install a specific version of pip package
-- `pip show <pip-package-name>` - Show info related a pip package
-- `pip freeze > reqs.txt` - Generate reqs.txt having all installed packages and their versions
-- `pip install -r reqs.txt` - Install package(s) specified in the reqs.txt
 - `pip download -d /tmp/pip_wheels -r reqs.txt` - Download specified wheels in a directory
+- `pip freeze > reqs.txt` - Generate reqs.txt having all installed packages and their versions
+- `pip install "package>=0.2,<0.3"` - Install a specific version of pip package
 - `pip install --no-cache-dir --find-links=/tmp/pip_wheels -r reqs.txt` - Install wheels from the locally directory before fetching it from PyPI repo + No cache the wheel.
+- `pip install --upgrade <pip-package-name>` - Upgrade a package
+- `pip install -r reqs.txt` - Install package(s) specified in the reqs.txt
+- `pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org <pip-package-name>` - Install package by forcing that pip source is trusted
+- `pip list --outdated --format=freeze` - Show list of outdated installed packages
+- `pip list` - Show list of installed packages
+- `pip show <pip-package-name>` - Show info related a pip package
 
 <a name="python"></a>
 ## Python

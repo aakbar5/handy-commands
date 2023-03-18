@@ -1,10 +1,10 @@
 # sed
-- Useful commands using sed.
 
-## Table of Contents
 - [Intro](#intro)
 - [Flags](#flags)
 - [Useful commands](#commands)
+
+- Useful commands using sed.
 
 <a name="intro"></a>
 ## Intro
