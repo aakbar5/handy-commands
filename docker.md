@@ -1,4 +1,5 @@
-# Table of Contents
+# Docker
+
 - [Background](#background)
 - [Docker](#docker)
 - [Docker images](#images)

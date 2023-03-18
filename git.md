@@ -1,6 +1,5 @@
-# GIT
+# Git
 
-## Table of Contents
 - [Repo config](#repo_config)
 - [Log viewing](#log_viewing)
 - [Tags](#tags)
@@ -38,6 +37,10 @@ cd /path/to/repo
 git commit-graph write
 ```
 
+- Clone repo on `https` but ssl is not working
+git -c http.sslVerify=false
+
+
 <a name="log_viewing"></a>
 ## Log viewing
 - Simple view
@@ -64,12 +67,12 @@ git push origin :refs/tags/<old_tag_name>
 <a name="branches"></a>
 ## Branches
 
-- List all local branches -- `git branch -avv`
-- List all local + remote branches -- `git branch -arvv`
-- List branch of a specific remote -- `git branch --remote --list origin*`
-- Remove branch locally -- `git branch -d {the_local_branch}`
-- Remove remote branch -- `git push origin --delete {the_remote_branch}`
-- Create a branch in a old repo without history -- `git checkout --orphan newbranch`
+- `git branch -avv` - List all local branches
+- `git branch -arvv` - List all local + remote branches
+- `git branch --remote --list origin*` - List branch of a specific remote
+- `git branch -d {the_local_branch}` - Remove branch locally
+- `git push origin --delete {the_remote_branch}` - Remove remote branch
+- `git checkout --orphan newbranch` - Create a branch in a old repo without history
 
 <a name="remote_tracking"></a>
 ## Remote tracking
@@ -157,8 +160,8 @@ git push --all
 ```
 - chmod changes
 ```bash
-git diff --summary | grep --color 'mode change 100755 => 100644' | cut -d' ' -f7- | xargs -d'\n' chmod +x
-git diff --summary | grep --color 'mode change 100644 => 100755' | cut -d' ' -f7- | xargs -d'\n' chmod -x
+git diff --summary | grep 'mode change 100755 => 100644' | cut -d' ' -f7- | xargs --no-run-if-empty -d'\n' chmod +x
+git diff --summary | grep 'mode change 100644 => 100755' | cut -d' ' -f7- | xargs --no-run-if-empty -d'\n' chmod -x
 ```
 
 <a name="stash"></a>
@@ -183,26 +186,22 @@ Temporarily saves changes of half-done work.
 <a name="submodule"></a>
 ## Submodule
 
-- Initialize local repo for a new submodule
-```bash
-git submodule init
-git submodule status
-```
+- `git submodule init` - Initialize local repo for a new submodule
+- `git submodule update --recursive` - Update submodule to the committed state
+- `git submodule update --recursive --remote` - Get the latest updates for remote branches
+- `git submodule update --init` - Above two commands can be executed using the single command
+- `git submodule update --init --recursive` - Fetch submodule in an existing cloned repo
+- `git submodule status --recursive` - Status of the submodule
+- `git submodule add -f link-to-new-repo path/to/folder/to/checkout/repo` - Add a new repo as a submodule
+- `git clone --recurse-submodules link-to-repo` - Clone a repo having submodule(s)
 
-- Add a new repo as a submodule
-```bash
-git submodule add -f link-to-new-repo path/to/folder/to/checkout/repo
-```
-
-- Clone a repo having submodule(s)
-```bash
-git clone --recurse-submodules link-to-repo
-```
-
-- Fetch submodule in an already cloned repo
-```bash
-git submodule update --init --recursive
-```
+- `git submodule update --remote <submodule-name>` - Update a specific submodule
+- `git diff --submodule` - Show diff of the submodules
+- `git push --recurse-submodules=check` - Push changes to the superproject only if all submodules are pushed also
+- `git push --recurse-submodules=on-demand` - Push changes to the submodules and then push the superproject changes
+- `git submodule foreach '<arbitrary-command-to-run>'` - Run arbitrary commands on each submodule
+    - `git submodule foreach 'git status'` - Run `git status` for each submodule
+    - `git submodule foreach --recursive git fetch` - Run `git fetch for each submodule
 
 - Check out the master and update all submodules
 ```bash
@@ -221,6 +220,8 @@ git submodule foreach --recursive git pull
 git submodule deinit path/to/folder/having/repo/as/submodule
 git rm path/to/folder/having/repo/as/submodule
 ```
+
+- `git submodule mv old/path/to/submodule new/path/to/submodule` - Moving a submodule to another path
 
 <a name="ssh_keys"></a>
 ## Setup SSH keys
@@ -294,6 +295,11 @@ Host github-secondary
   HostName github.com
   User git
   IdentityFile ~/.ssh/id_rsa_secondary
+```
+
+- Test connection
+```bash
+ssh git@github.com
 ```
 
 - Now to checkout a repo against a specific user:
@@ -387,9 +393,4 @@ git remote add upstream </path/to/original/repo>
 git remote -v
 git fetch upstream
 git merge upstream/branch-name
-```
-
-- To fix git mode changes (old mode 100644 -> new mode 100755)
-```bash
-git ls-files -m | xargs -L 1 chmod 644
 ```

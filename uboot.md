@@ -1,4 +1,5 @@
-# Table of Contents
+# Uboot
+
 - [General commands](#general)
 - [Memory](#memory)
 - [File System](#file_system)
