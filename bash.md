@@ -1,6 +1,6 @@
 # Bash
 
-<!-- TOC -->
+<!-- TOC depthfrom:1 depthto:1 -->
 
 - [Bash](#bash)
 - [Comments](#comments)
@@ -9,37 +9,22 @@
 - [Sleep](#sleep)
 - [Variables](#variables)
 - [Arrays](#arrays)
-    - [Indexed](#indexed)
-    - [Associative](#associative)
 - [Array 2D](#array-2d)
 - [Arithmetics](#arithmetics)
-    - [Simple](#simple)
-    - [Using let](#using-let)
-    - [Using backtick & expr](#using-backtick--expr)
 - [If statement](#if-statement)
 - [Switch statement](#switch-statement)
 - [File validation](#file-validation)
 - [Compound statement](#compound-statement)
 - [Loops](#loops)
 - [String manipulation](#string-manipulation)
-    - [Length](#length)
-    - [Slicing](#slicing)
-    - [Concatenate](#concatenate)
-    - [Changing case](#changing-case)
-    - [Comparison](#comparison)
-    - [Substitution](#substitution)
 - [Using builtin -z and -n operator](#using-builtin--z-and--n-operator)
-    - [For string](#for-string)
-    - [For variables](#for-variables)
 - [File path manipulation](#file-path-manipulation)
 - [Variable substitution](#variable-substitution)
-    - [${parameter:-word}](#parameter-word)
-    - [${parameter-word}](#parameter-word)
 - [Invoking script](#invoking-script)
 - [Random number](#random-number)
 - [Function](#function)
 - [Global and local variables](#global-and-local-variables)
-- [getopts](#getopts)
+- [Argument handling](#argument-handling)
 - [Read a file](#read-a-file)
 
 <!-- /TOC -->
@@ -191,9 +176,9 @@ echo "Count: ${#iarray[@]}" # Show number of elements in the array
 echo "Elems: ${iarray[@]}" # Show all elements of the array
 echo "Sub elems: ${iarray[@]:1:3}" # Show all elements of the array b/w the range
 ```
-> `Count: 5`
-> `Elems: 10 20 30 40 50`
-> `Sub elems: 20 30 40`
+> `Count: 5` \
+`Elems: 10 20 30 40 50` \
+`Sub elems: 20 30 40`
 
 
 - Iterate over the array
@@ -202,11 +187,11 @@ for ((i=0; i < ${#iarray[@]}; ++i)); do
   echo "Index # $i: ${iarray[i]}"
 done
 ```
-> `Index # 0: 10`
-> `Index # 1: 20`
-> `Index # 2: 30`
-> `Index # 3: 40`
-> `Index # 4: 50`
+> `Index # 0: 10` \
+`Index # 1: 20` \
+`Index # 2: 30` \
+`Index # 3: 40` \
+`Index # 4: 50`
 
 
 - Remove a specific element from the array
@@ -232,13 +217,13 @@ echo ${iarr[@]} # Show all elements of the array
 - Use arbitrary strings
 - Syntax: `declare -A array`
 
-``bash
+```bash
 declare -A aarr
 aarr[animal]=lion
 aarr[location]=African
 ```
 
-# Add new key
+### Add new key
 ```bash
 aarr+=([group]=Pride)
 ```
@@ -247,8 +232,8 @@ aarr+=([group]=Pride)
 echo "Count: ${#aarr[@]}" # Show number of elements in the array
 echo "Elems: ${aarr[@]}" # Show all elements of the array
 ```
-> `Count: 3`
-> `Elems: lion african pride`
+> `Count: 3` \
+`Elems: lion african pride`
 
 
 - Iterate keys of the array
@@ -257,9 +242,9 @@ for key in "${!aarr[@]}"; do
   echo "Key # $key";
 done
 ```
-> `Key # animal`
-> `Key # location`
-> `Key # group`
+> `Key # animal` \
+`Key # location` \
+`Key # group`
 
 
 - Show all keys
@@ -275,9 +260,9 @@ for val in "${aarr[@]}"; do
   echo "Value # $val";
 done
 ```
-> `Value # lion`
-> `Value # african`
-> `Value # pride`
+> `Value # lion` \
+`Value # african` \
+`Value # pride`
 
 
 - Show all values
@@ -293,9 +278,9 @@ for key in "${!aarr[@]}"; do
  echo "$key: ${aarr[$key]}";
 done
 ```
-> `animal: lion`
-> `location: african`
-> `group: pride`
+> `animal: lion` \
+`location: african` \
+`group: pride`
 
 # Array 2D
 ```bash
@@ -314,10 +299,10 @@ for ((x=0;x<num_rows;x++)) do
   done
 done
 ```
-> `0,0 = 00`
-> `0,1 = 01`
-> `1,0 = 10`
-> `1,1 = 11`
+> `0,0 = 00` \
+`0,1 = 01` \
+`1,0 = 10` \
+`1,1 = 11`
 
 
 # Arithmetics
@@ -333,8 +318,8 @@ echo $((x+y)) # spaces does not matter
 echo $(($x+$y)) # having $ for variable does not matter
 ```
 > `12` \
-> `12` \
-> `12`
+`12` \
+`12`
 
 - Perform additional calculation
 ```bash
@@ -451,11 +436,11 @@ fi
 [[ 9 -ge 9 ]] && echo "First number is greater than/equal second number"
 ```
 > `Both numbers are equal` \
-> `Both numbers are different` \
-> `First number is less than second number` \
-> `First number is less than/equal second number` \
-> `First number is greater than second number` \
-> `First number is greater than/equal second number`
+`Both numbers are different` \
+`First number is less than second number` \
+`First number is less than/equal second number` \
+`First number is greater than second number` \
+`First number is greater than/equal second number`
 
 
 # Switch statement
@@ -539,10 +524,10 @@ while [[ $a -le 5 ]]; do
 done
 ```
 > `While loop idx # 1` \
-> `While loop idx # 2` \
-> `While loop idx # 3` \
-> `While loop idx # 4` \
-> `While loop idx # 5`
+`While loop idx # 2` \
+`While loop idx # 3` \
+`While loop idx # 4` \
+`While loop idx # 5`
 
 - For loop with defined range and default increment
 ```bash
@@ -551,15 +536,15 @@ for i in {1..10}; do
 done
 ```
 > `loop # 1 with step @ 1` \
-> `loop # 2 with step @ 1` \
-> `loop # 3 with step @ 1` \
-> `loop # 4 with step @ 1` \
-> `loop # 5 with step @ 1` \
-> `loop # 6 with step @ 1` \
-> `loop # 7 with step @ 1` \
-> `loop # 8 with step @ 1` \
-> `loop # 9 with step @ 1` \
-> `loop # 10 with step @ 1`
+`loop # 2 with step @ 1` \
+`loop # 3 with step @ 1` \
+`loop # 4 with step @ 1` \
+`loop # 5 with step @ 1` \
+`loop # 6 with step @ 1` \
+`loop # 7 with step @ 1` \
+`loop # 8 with step @ 1` \
+`loop # 9 with step @ 1` \
+`loop # 10 with step @ 1`
 
 
 - For loop with defined range and custom increment
@@ -569,10 +554,10 @@ for i in {1..10..2}; do
 done
 ```
 > `loop # 1 with step @ 2` \
-> `loop # 3 with step @ 2` \
-> `loop # 5 with step @ 2` \
-> `loop # 7 with step @ 2` \
-> `loop # 9 with step @ 2`
+`loop # 3 with step @ 2` \
+`loop # 5 with step @ 2` \
+`loop # 7 with step @ 2` \
+`loop # 9 with step @ 2`
 
 
 - For loop c-style
@@ -582,15 +567,15 @@ for ((i = 1 ; i <= 10 ; i++)); do
 done
 ```
 > `c-style loop # 1 with step @ 1` \
-> `c-style loop # 2 with step @ 1` \
-> `c-style loop # 3 with step @ 1` \
-> `c-style loop # 4 with step @ 1` \
-> `c-style loop # 5 with step @ 1` \
-> `c-style loop # 6 with step @ 1` \
-> `c-style loop # 7 with step @ 1` \
-> `c-style loop # 8 with step @ 1` \
-> `c-style loop # 9 with step @ 1` \
-> `c-style loop # 10 with step @ 1`
+`c-style loop # 2 with step @ 1` \
+`c-style loop # 3 with step @ 1` \
+`c-style loop # 4 with step @ 1` \
+`c-style loop # 5 with step @ 1` \
+`c-style loop # 6 with step @ 1` \
+`c-style loop # 7 with step @ 1` \
+`c-style loop # 8 with step @ 1` \
+`c-style loop # 9 with step @ 1` \
+`c-style loop # 10 with step @ 1`
 
 
 - For loop in c-style
@@ -600,10 +585,10 @@ for ((i = 1 ; i <= 10 ; i += 2)); do
 done
 ```
 > `c-style loop # 1 with step @ 2` \
-> `c-style loop # 3 with step @ 2` \
-> `c-style loop # 5 with step @ 2` \
-> `c-style loop # 7 with step @ 2` \
-> `c-style loop # 9 with step @ 2`
+`c-style loop # 3 with step @ 2` \
+`c-style loop # 5 with step @ 2` \
+`c-style loop # 7 with step @ 2` \
+`c-style loop # 9 with step @ 2`
 
 
 - For loop with seq expression
@@ -613,10 +598,10 @@ for i in `seq 1 5`; do
 done
 ```
 > `loop with seq expr # 1` \
-> `loop with seq expr # 2` \
-> `loop with seq expr # 3` \
-> `loop with seq expr # 4` \
-> `loop with seq expr # 5`
+`loop with seq expr # 2` \
+`loop with seq expr # 3` \
+`loop with seq expr # 4` \
+`loop with seq expr # 5`
 
 
 - `for` loop to iterate over word list
@@ -627,15 +612,15 @@ for word in $words; do
 done
 ```
 > `word1` \
-> `word2` \
-> `word3`
+`word2` \
+`word3`
 
 ```bash
 for word in word1 word2 word3; do echo "$word"; done
 ```
 > `word1` \
-> `word2` \
-> `word3`
+`word2` \
+`word3`
 
 - `for` loop to iterate over word list
 ```bash
@@ -649,10 +634,10 @@ for word in $words; do
 done
 ```
 > `word1` \
-> `word2` \
-> `word3` \
-> `word4` \
-> `word5`
+`word2` \
+`word3` \
+`word4` \
+`word5`
 
 
 # String manipulation
@@ -780,8 +765,8 @@ if [ "${str}" != "String" ]; then
     echo "Both strings are different"
 fi
 ```
-> `Both strings are equal`
-> `Both strings are different`
+> `Both strings are equal` \
+`Both strings are different`
 
 - String comparison using single line if statements
 ```bash
@@ -789,7 +774,7 @@ fi
 [[ "bash" != "bash" ]] && echo "String not equal" || echo "String are equal"
 ```
 > `String are not equal` \
-> `String are equal`
+`String are equal`
 
 See [Compound statement](#compound-statement)
 
@@ -799,7 +784,7 @@ See [Compound statement](#compound-statement)
 [[ "bash" != "bash" ]] || echo "String are equal"
 ```
 > `String are not equal` \
-> `String are equal`
+`String are equal`
 
 
 ## Substitution
@@ -816,7 +801,7 @@ echo ${str//l/L} # Replace l with L
 echo ${str//world} # Remove world
 ```
 > `Bash, heLLo worLd! Bash, heLLo worLd!` \
-> `Bash, hello ! Bash, hello !`
+`Bash, hello ! Bash, hello !`
 
 - If $substring matches front end of $string, substitute $replacement for $substring.
 ```bash
@@ -890,38 +875,39 @@ str="bash"
 ```bash
 a=0
 if [ -n "$a" ]; then
-  echo "a is set (Using -z)"
+  echo "a is set (Using -n)"
 else
-  echo "a is not set (Using -z)"
+  echo "a is not set (Using -n)"
 fi
 
 # b=0
-if [ -z "$b" ]; then
-  echo "b is set (Using -z)"
+if [ -n "$b" ]; then
+  echo "b is set (Using -n)"
 else
-  echo "b is not set (Using -z)"
+  echo "b is not set (Using -n)"
 fi
 ```
-> `a is set (Using -z)` \
-> `b is set (Using -z)`
+> `a is set (Using -n)` \
+`b is not set (Using -n)`
+
 
 ```bash
 x=0
-if [ -n "$x" ]; then
-  echo "x is set (Using -n)"
+if [ -z "$x" ]; then
+  echo "x is empty (Using -z)"
 else
-  echo "x is not set (Using -n)"
+  echo "x is not empty (Using -z)"
 fi
 
 # y=0
-if [ -n "$y" ]; then
-  echo "y is set (Using -n)"
+if [ -z "$y" ]; then
+  echo "y is empty (Using -z)"
 else
-  echo "y is not set (Using -n)"
+  echo "y is not empty (Using -z)"
 fi
 ```
-> `x is set (Using -n)` \
-> `y is not set (Using -n)`
+> `x is not empty (Using -z)` \
+`y is empty (Using -z)`
 
 
 # File path manipulation
@@ -935,10 +921,10 @@ echo "File Name + ext:  ${path##*/}"
 echo "Extension:        ${path##*.}"
 ```
 > `                  /path/to/file.ext` \
-> `Path + File Name: /path/to/file` \
-> `Path:             /path/to` \
-> `File Name + ext:  file.ext` \
-> `Extension:        ext`
+`Path + File Name: /path/to/file` \
+`Path:             /path/to` \
+`File Name + ext:  file.ext` \
+`Extension:        ext`
 
 
 # Variable substitution
@@ -1022,10 +1008,116 @@ Generate numbers b/w 100-250.
 
 
 # Function
+```bash
+function foo() {
+  ...
+}
+```
+
+- `foo` a simple function which grouped a number of statements and to call it simply type `foo`.
+- `function` keyboard prior to `foo` is optional.
+
+## Passing arugments to funtions
+- `funa` is a function which takes any number of parameters and print those.
+
+```bash
+function funa() {
+  echo "funa is passed $# params"
+  for i in "$@"; do
+    echo "param value is $i";
+  done
+}
+```
+
+```bash
+funa
+```
+> `funa is passed 0 params`
+
+```bash
+funa 1
+```
+> `funa is passed 1 params` \
+`param value is 1`
+
+```bash
+funa 1 2
+```
+> `funa is passed 2 params` \
+`param value is 1` \
+`param value is 2`
+
+```bash
+funa 1 2 3
+```
+> `funa is passed 3 params` \
+`param value is 1` \
+`param value is 2` \
+`param value is 3`
+
+## Return value from function
+```bash
+funb() {
+  local param1=$1
+  local param2=$2
+  local result=$param1+$param2
+  echo $result
+}
+```
+
+- `echo` command of `funb` will print message on conole
+```bash
+funb "a" "b"
+```
+> `a+b`
+
+- Capture it to a variable
+```bash
+output=$(funb "c" "d")
+echo "Output: $output"
+```
+> `Output: c+d`
+
+## return statement in function
+If function is not having any return statement, exit status of the last command of the function will be returned. You can use `return` statement to provided specific return value. It can be upto 0 to 255.
+
+```bash
+funa() {
+	return 1
+}
+funa
+echo $?
+```
+> `1`
+
+```bash
+funb() {
+	return 110
+}
+funb
+echo $?
+```
+> `110`
+
+```
+fund() {
+	echo "Hello"
+}
+fund
+echo $?
+```
+> `Hello` \
+`0`
+
+
 [Different style of functions](https://gist.github.com/aakbar5/9ac8073f30965c6d138b041dfc4d69a8)
 
 
 # Global and local variables
+Variables are global by nature.
+
+
+## Usage # 1
 ```bash
 var=10
 function test() {
@@ -1037,12 +1129,13 @@ test
 echo "var in main = $var"
 ```
 
-```
-var in test = 20
-var in main = 20
-```
+Output:
+> `var in test = 20` \
+`var in main = 20`
 
-Output will be like following:
+
+## Usage # 2
+
 ```bash
 var=10
 function test() {
@@ -1055,17 +1148,52 @@ test
 echo "var in main = $var"
 ```
 
-Output will be like following:
-```
-var in test = 20
-var in main = 10
+Output:
+> `var in test = 20` \
+`var in main = 10`
+
+
+## Usage # 3
+```bash
+func() {
+  VAR1='A'
+  local VAR2='B'
+
+  echo "func: Variable VAR1: $VAR1"
+  echo "func: Variable VAR2: $VAR2"
+}
+
+fund() {
+  VAR3='C'
+  echo "fund: Variable VAR3: $VAR3"
+
+  # Although VAR1 is declared in func but still fund can see
+  # because variable in bash are global in nature not matter
+  # where you are defining it
+  echo "fund: Variable VAR1: $VAR1"
+
+  # As VAR2 is defined using local so fund can't access it
+  echo "fund: Variable VAR2: $VAR2"
+}
+
+# Call functions
+func
+fund
 ```
 
-# getopts
-[getopts usage](https://gist.github.com/aakbar5/e2cf511c5844929afc849cf0fda46296)
+> `func: Variable VAR1: A` \
+`func: Variable VAR2: B` \
+`fund: Variable VAR3: C` \
+`fund: Variable VAR1: A` \
+`fund: Variable VAR2:`
 
-- If `:` is not found at the start of the argument list, `getopts` does not perform any error checking. Otherwise error will be reported on having unkown option or paramter.
-- `getopts` does not handle long options (`--long`). `getopt` can do the job however it is not built-in functionality of the Bourne shell.
+
+# Argument handling
+- getopts is a built-in Unix command to parse arguments.
+[`getopts` usage](https://gist.github.com/aakbar5/e2cf511c5844929afc849cf0fda46296)
+
+  - If `:` is not found at the start of the argument list, `getopts` does not perform any error checking. Otherwise error will be reported on having unkown option or paramter.
+  - `getopts` does not handle long options (`--long`). `getopt` can do the job however it is not built-in functionality of the Bourne shell.
 
 # Read a file
 ```bash
