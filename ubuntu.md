@@ -225,9 +225,14 @@ find /usr/share/ -type f -printf "%f\n" | sort | uniq > uniq.txt
 find . -type l -ls
 ```
 
-- Delete empty folders
+- Find and delete empty folders
 ```bash
 find /path/to/folder -depth -type d -empty -delete
+```
+
+- Find and delete specific format file
+```bash
+find . ! -name '*.pdf' -type f -exec rm -f {} +
 ```
 
 <a name="redirection"></a>
