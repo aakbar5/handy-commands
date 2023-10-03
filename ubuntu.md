@@ -45,6 +45,12 @@ gsettings set org.gnome.desktop.media-handling automount true
 gsettings set org.gnome.desktop.media-handling automount false
 ```
 
+- Remove a package from ubuntu
+```bash
+dpkg --list # Find package name
+sudo apt remove <package.name> # Remove package
+```
+
 <a name="loop_devices"></a>
 ## Loop devices
 
@@ -498,6 +504,10 @@ ffmpeg -i input.mp4 output_%02d.png
 ```
 - `-r 1.0` - in above command will ask to capture frame after 1 seconds instead of all.
 
+- Output one image every 1 seconds: `ffmpeg -i input.mp4 -vf fps=1 out%d.png`
+- Output one image every minute: `ffmpeg -i test.mp4 -vf fps=1/60 thumb%04d.png`
+- Output one image every 10 minutes: `ffmpeg -i test.mp4 -vf fps=1/600 thumb%04d.png`
+
 ### Convert PNGs to video
 
 - Single image to video of 1 minute length and specific video format
@@ -530,3 +540,8 @@ for i in `find . -name "*.jpg"`; do convert $i -normalize -threshold 80% $i; don
 for i in `find . -name "*.jpg"`; do convert $i -channel RGB -contrast-stretch 1x1% $i; done
 ```
 https://legacy.imagemagick.org/Usage/color_mods/
+
+### PNGs to GIF
+```bash
+convert -delay 25 -loop 0 *.png test.gif
+```

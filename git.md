@@ -377,6 +377,11 @@ git gc --prune=now
 git commit --allow-empty -m "Do an empty commit"
 ```
 
+- Amend the date of the latest commit (Change the date to up to date)
+```bash
+GIT_COMMITTER_DATE="$(date)" git commit --amend --no-edit --date "$(date)" 
+```
+
 - Amend author the last commit
 ```bash
 git commit --amend --author="aakbar5 <16612387+aakbar5@users.noreply.github.com>"
