@@ -122,6 +122,13 @@ docker cp container-name:/folder folder
 - `docker load --input image-name-backup.tar` - Restore docker image backup
 - `docker save image-name | gzip > image-name-backup.tar.gz` - Create backup of the docker image and compress it
 - `gzcat image-name-backup.tar.gz | docker load` - Restore compressed docker image
+- Docker save command with progress bar
+```bash
+docker save image-name | pv -s $(docker image inspect image-name --format='{{.Size}}') > backup.tar
+docker save image-name | tqdm --bytes --total $(docker image inspect image-name --format='{{.Size}}') > backup.tar
+
+pv backup.tar | sudo docker load
+```
 
 <a name="registry_push"></a>
 ## Registry -- push
