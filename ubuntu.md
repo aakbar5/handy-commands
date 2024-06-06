@@ -409,9 +409,8 @@ ffmpeg -i old.mp3 -acodec libmp3lame -ac 2 -ab 64k -ar 44100 new-1.mp3
 ## Video Manipulation
 
 ### Convert MOV into MP4
-```bash
-ffmpeg -i input.mov -codec copy output.mp4
-```
+- MOV into MP4: `ffmpeg -i input.mov -codec copy output.mp4`
+- Convert codec from HEVC to H264: `ffmpeg -i input.mp4 -c:v libx264 output.mp4`
 
 ### Change speed of the video
 ```bash
