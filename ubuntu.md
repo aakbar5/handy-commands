@@ -534,6 +534,11 @@ ffmpeg -framerate 1/5 -i input_%02d.png -vf format=yuv420p -r 60 test.mp4
 for i in `find . -name "*.jpg"`; do convert $i -normalize -threshold 80% $i; done
 ```
 
+NOTE: If file name is having spaces, `$i` will not have full file name. To avoid this
+```bash
+IFS=$'\n'; for i in `find . -name "*.jpg"`; do echo "$i"; done
+```
+
 - Enhance color image
 ```bash
 for i in `find . -name "*.jpg"`; do convert $i -channel RGB -contrast-stretch 1x1% $i; done
