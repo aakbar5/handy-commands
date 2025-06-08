@@ -467,43 +467,62 @@ esac
 
 # File validation
 
+- Single line if condition
+
 ```bash
 # -e can be used to check existence of a file or directory
 [[ -e "/path/to/folder" ]]      && echo "Directory is there" || echo "Directory is not there"
-[[ -e "/path/to/folder/file" ]] && echo "File is there"      || echo "File is not there"
+[[ -e "/path/to/folder/or/file" ]] && echo "File is there"      || echo "File is not there"
 
 # -f can be only be used to check existence of a file
 [[ -f "/path/to/folder" ]]      && echo "Directory is there" || echo "Directory is not there"
-[[ -f "/path/to/folder/file" ]] && echo "File is there"      || echo "File is not there"
-[[ -f "/path/to/folder/file" ]] || echo "File is not there"
-[[ -f "/path/to/folder/file" ]] || { echo "File is not there"; exit 1; }
+[[ -f "/path/to/folder/or/file" ]] && echo "File is there"      || echo "File is not there"
+[[ -f "/path/to/folder/or/file" ]] || echo "File is not there"
+[[ -f "/path/to/folder/or/file" ]] || { echo "File is not there"; exit 1; }
 
 # Use -d for directory
 [[ -d "/path/to/folder" ]]      && echo "Directory is there" || echo "Directory is not there"
-[[ -d "/path/to/folder/file" ]] && echo "File is there"      || echo "File is not there"
+[[ -d "/path/to/folder/or/file" ]] && echo "File is there"      || echo "File is not there"
 
 # Validation of file path
-[[ -r "/path/to/folder/file" ]] && echo "File is readable"   || echo "File is not readable"
-[[ -w "/path/to/folder/file" ]] && echo "File is writable"   || echo "File is not writable"
-[[ -x "/path/to/folder/file" ]] && echo "File is executable" || echo "File is not executable"
-[[ -s "/path/to/folder/file" ]] && echo "File size >0 bytes" || echo "File size is of 0 bytes"
-[[ -h "/path/to/folder/file" ]] && echo "File is symblink"   || echo "File is not symlink"
+[[ -r "/path/to/folder/or/file" ]] && echo "File is readable"   || echo "File is not readable"
+[[ -w "/path/to/folder/or/file" ]] && echo "File is writable"   || echo "File is not writable"
+[[ -x "/path/to/folder/or/file" ]] && echo "File is executable" || echo "File is not executable"
+[[ -s "/path/to/folder/or/file" ]] && echo "File size >0 bytes" || echo "File size is of 0 bytes"
+[[ -h "/path/to/folder/or/file" ]] && echo "File is symblink"   || echo "File is not symlink"
 
 # File comparison
-[[ "/path/to/f1" -nt "/path/to/f2" ]] && echo "f1 is more recent than f2"
-[[ "/path/to/f1" -ot "/path/to/f2" ]] && echo "f2 is more recent than 1"
-[[ "/path/to/f1" -ef "/path/to/f2" ]] && echo "f1 & f2 are the same files"
+[[ "/path/to/file1" -nt "/path/to/file2" ]] && echo "file1 is more recent than file22"
+[[ "/path/to/file1" -ot "/path/to/file2" ]] && echo "file2 is more recent than 1"
+[[ "/path/to/file1" -ef "/path/to/file2" ]] && echo "file1 & file2 are the same files"
+```
+
+- using multi-line if condition
+
+```bash
+if test -f /path/to/file; then
+  echo "File is there"
+fi
+
+if ! test -f /path/to/file; then
+  echo "File does not exist"
+fi
+
+if ! [ -f /path/to/file ]; then
+  echo "File does not exist."
+fi
+
 ```
 
 
 # Compound statement
 - second part of the command after `;` will not be executed
-```
+```bash
 [ -f test.txt ] && echo "first command"; cat "second command";
 ```
 
 - use compound statement to execute multiple commands
-```
+```bash
 [ -f sample.txt ] && { echo "first command"; cat "second command"; }
 ```
 
@@ -511,7 +530,7 @@ esac
 # Loops
 
 - while loop (for ever)
-```
+```bash
 while true; do echo "hello"; sleep 2; done
 ```
 
