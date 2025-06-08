@@ -19,22 +19,25 @@
     - [Images](#images)
     - [Misc commands](#misc-commands)
 - [Buildroot](#buildroot)
+- [Misc](#misc)
+    - [Setup TFTP](#setup-tftp)
 
 <!-- /TOC -->
 
 # Linux
 
 ## Compile
-- `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- clean` - Remove object files
-- `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- mrproper` - Remove intermediate files including .config
-- `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- distclean`
-- `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- <defconfig>`
-- `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- menuconfig`
-- `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage`
-- `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- <dt filename>.dtb` - Build an individual dts file
-- `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- dtbs- ` - Build all DTS
-- `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- modules- `
-- `sudo make ARCH=arm INSTALL_MOD_PATH=<path to root of file system> modules_install`
+- `make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- clean` - Remove object files
+- `make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- distclean` - Remove intermediate files including .config
+- `make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- mrproper` - 
+- `make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- <defconfig>`
+- `make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- menuconfig`
+- `make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- savedefconfig`
+- `make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- zImage`
+- `make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- <dt filename>.dtb` - Build an individual dts file
+- `make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- dtbs- ` - Build all DTS
+- `make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- modules- `
+- `sudo make ARCH=arm64 INSTALL_MOD_PATH=<path to root of file system> modules_install`
  - `INSTALL_MOD_STRIP=1` - Pass it on to strip down debug info from the kernel module
 
 
@@ -200,13 +203,13 @@
 - Add features using `bbappend`
 
 Enable features:
-```
+```bash
 PACKAGECONFIG ?= "feature1"
 PACKAGECONFIG += "feature2"
 ```
 
 Pass different options as per new features:
-```
+```bash
 PACKAGECONFIG[feature1] = "--enable-feature1,--disable-feature1,dependencies"
 PACKAGECONFIG[feature2] = "--enable-feature2,--disable-feature2,dependencies
 ```
@@ -214,7 +217,7 @@ PACKAGECONFIG[feature2] = "--enable-feature2,--disable-feature2,dependencies
 ### Pass build flags
 
 - Pass new flags to build:
-```
+```bash
 EXTRA_OECMAKE += " -DENABLE_MODULE_1=1 -DEXTRA_FLAGS=1"
 ```
 
@@ -263,6 +266,8 @@ IMAGE_ROOTFS_SIZE = "3806250"
 - `make linux-rebuild` - Rebuild kernel
 - `make linux-menuconfig` - Run menuconfiq of the kernel
 - `make savedefconfig` - Save config of buildroot (`cp defconfig arch/arm/configs/my_cool_defconfig`)
+    - `make savedefconfig BR2_DEFCONFIG=<path-to-defconfig>`
+    
 - `rm -rf </path/to/buildroot/folder>/output/build/linux-*` - Manually remove build artifact related to the kernel
 - `rm </path/to/buildroot/folder>/dl/linux-*` - Manually remove download files related to the kernel
 - Config files
@@ -307,6 +312,6 @@ sudo rpcinfo -p
 ```
 
 - To test
-```
+```bash
 nfs://[hostname-or-ip-of-pi]/srv/nfs
 ```

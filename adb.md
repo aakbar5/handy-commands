@@ -30,6 +30,7 @@
 
 <!-- /TOC -->
 
+
 # General
 - `adb help` - List available commands
 - `adb devices` - lists connected devices
@@ -81,6 +82,7 @@
 
 # dumpsys
 - `adb shell dumpsys` - Dump everthing collected by dumpsys
+- `adb shell dumpsys SurfaceFlinger` - Dump everthing collected about SurfaceFlinger
 - `adb shell dumpsys -l` - Only list services
 - `adb shell dumpsys battery` - Gets device battery info
 - `adb shell dumpsys package packages` - Get info of all apps
@@ -293,4 +295,13 @@ ABS_MT_POSITION_X
 ```bash
 adb shell input swipe 300 300 500 1000
 adb shell input swipe 500 1000 300 300
+```
+
+```bash
+adb shell input keyevent 82
+adb shell input keyevent KEYCODE_APP_SWITCH
+adb shell input keyevent KEYCODE_APP_SWITCHER
+adb shell input keyevent KEYCODE_CLOSE
+adb shell input keyevent KEYCODE_DPAD_DOWN
+adb shell input keyevent KEYCODE_ENTER
 ```
