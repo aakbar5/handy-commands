@@ -1,24 +1,20 @@
-# sed
 
-- [Intro](#intro)
-- [Flags](#flags)
-- [Useful commands](#commands)
+<!-- TOC depthto:2 -->
 
-- Useful commands using sed.
+- [Text manipulation](#text-manipulation)
+- [sed](#sed)
+    - [Intro](#intro)
+    - [Flags](#flags)
+    - [Useful commands](#useful-commands)
+- [grep](#grep)
 
-<a name="intro"></a>
-## Intro
-- sed (stream editor)
-
-<a name="flags"></a>
-## Flags
+<!-- /TOC -->
 - `-i` -- in place text editing
 - `s` -- the substitute command
 - `g` -- global (replace all occurrence)
 - `original` -- original text
 - `new` -- new text
 
-<a name="commands"></a>
 ## Useful commands
 
 ### Grep lines b/w two strings
@@ -97,4 +93,17 @@ echo "a b       " | sed -e 's/[[:space:]]*$//'
 ### Remove lines starting with string
 ```
 sed -i '/^string/d' file.txt
+```
+
+### Remove tokens which are not starting with `-`
+```
+echo "--foo removeit -abc this_one_too" | sed -e 's/^/ /g' -e 's/ [^-][^ ]*//g' -e 's/^ *//g'
+```
+
+# grep
+
+```bash
+somecommand | grep -e foo -e bar -e baz
+somecommand | grep -E 'foo|bar|baz'
+somecommand | grep -i (case insensitive)
 ```

@@ -1,21 +1,23 @@
-<!-- TOC -->
+
+<!-- TOC depthto:2 -->
 
 - [Linux](#linux)
     - [Compile](#compile)
     - [Device Tree](#device-tree)
     - [GCC commands](#gcc-commands)
-    - [Compiler symbol extraction](#compiler-symbol-extraction)
+    - [readelf](#readelf)
+    - [nm](#nm)
+    - [string](#string)
+    - [objdump](#objdump)
+    - [strip](#strip)
+    - [Misc compiler commands](#misc-compiler-commands)
     - [Misc](#misc)
 - [Yocto](#yocto)
     - [Recipes](#recipes)
     - [bbappend](#bbappend)
-        - [Enable new feature](#enable-new-feature)
-        - [Pass build flags](#pass-build-flags)
     - [Layers](#layers)
     - [Images](#images)
     - [Misc commands](#misc-commands)
-        - [Find out toolchain used by the Yocto](#find-out-toolchain-used-by-the-yocto)
-        - [Expand disk size](#expand-disk-size)
 - [Buildroot](#buildroot)
 
 <!-- /TOC -->
@@ -47,28 +49,24 @@
 - `gcc -dM -E - < /dev/null` - See list of compiler default macros in standard build
 - `gcc -dM -E -O0 - < /dev/null` - See list of the compiler default macros with optimization level 0
 - `g++ -dM -E -x c++ -std=c++11 - < /dev/null` - Compiler default macros in case of c++11
+- `gcc --help=warnings` - Compiler options to control warning
+- `gcc -Q --help=warning | sed -e 's/^\s*\(\-\S*\)\s*\[\w*\]/\1 /gp;d' | tr -d '\n'` - Make one long string of the compiler options
+- `gcc -Q --help=warning` - Show enable/disable state of compiler warning flags
+- `gcc -Wall -Wextra -Q --help=warning` - Show enable/disable state of compiler warning flags on using `-Wall -Wextra`
 
 
-## Compiler symbol extraction
-
-- `make kernelversion` - To see kernel version.
-- `strip --strip-debug </path/to/input/lib/program> -o </path/to/output/file>` - Strip debug info
-- `size --common --totals <path/to/obj/file/or/path/to/executable>` - Show sizes of the each section
-    ```
-    aarch64-poky-linux-size --common --totals vmlinux
-    text	   data	    bss	    dec	    hex	filename
-    15036748	8039596	 441152	23517496	166d938	vmlinux
-    15036748	8039596	 441152	23517496	166d938	(TOTALS)
-    ```
-- `rm /etc/ld.so.cache && ldconfig` - Force the system to rebuild ld cache
-
-- `nm -S --size-sort -s </path/to/executable/file>` - Getting symbols
-- `nm </path/to/c++/library> | c++filt` - Demangles C++ symbols
-
+## readelf
+- `readelf --relocs compilation_example.o` - Relocation symbols as shown by readelf
+- `readelf --sections --wide a.out` - A listing of sections in the example binary
+- `readelf --syms a.out` - Symbols in the a.out binary as shown by readelf
+- `readelf -h a.out` - Executable header as shown by readelf
+- `readelf -h elf_header` - The readelf output for the extracted ELF header
+- `readelf -p .interp a.out` - Contents of the .interp section
+- `readelf -s libhello.so` - Read constants string
 - `readelf --wide --syms </path/to/.so/file/or/executable/file>` - See all symbols of a .so file
 - `readelf --wide --sections </path/to/.so/file/or/executable/file>` - See summary of all sections
 - `readelf --file-header </path/to/.so/file/or/executable/file>` - Show header of the ELF file.
-                                            -- for so file: TYPE is DYN (Shared object file)
+    -- for so file: TYPE is DYN (Shared object file)
 
 - `readelf libcl.so -W -d | grep NEEDED` - Get list of the external libraries required by the ELF object
 - `readelf --all app` -
@@ -78,18 +76,60 @@
 - `readelf --relocs app` - Show relocation sections of the app
 - `readelf --segments app` - Show segment headers
 
-- `addr2line -f -e vmlinux 0xDEADBEAF` - Map address onto line in the source code
-- `<linux/source>/scripts/faddr2line vmlinux native_write_msr+0x6` - kernel secript to translate a stack dump function
+## nm
+- `nm -gDC libhello.so > libhello.symbols` - Extract symbols from the library
+- `nm -D libhello.so | c++filt` - Demangles C++ symbols
+- `nm -D --demangle lib5ae9b7f.so` - Demangled nm output for lib5ae9b7f.so
+- `nm -S --size-sort -s </path/to/executable/file>` - Getting symbols
+- `nm -D --demangle lib.so` - Use `nm` to demangle library symnbol
 
+## string
+- `strings -tf /bin/ls`
+- `strings -d test`
+- `strings -a test`
+- `strings -t d test`
+- `strings -a -t d libhello.so | c++filt`
+
+## objdump
+- `objdump -dM intel /path/to/executable/file` - (`-d` - Disassebmle executable sections), (`-M` - Intel specific syntax)
+- `objdump -DM intel /path/to/executable/file` - Disassemble all
+- `objdump -f /path/to/executable/file` - Display file headers
+- `objdump -g /path/to/executable/file` - Display debug information
+- `objdump -h /path/to/executable/file` - Display section headers
+- `objdump -M intel -d a.out` - Disassembling an executable with objdump
+- `objdump -p /path/to/executable/file` - Show information that is specific to the object file format
+- `objdump -R /path/to/executable/file` - Display the dynamic relocation table
+- `objdump -s /path/to/executable/file` - Display full contents of any sections
+- `objdump -sj .rodata compilation_example.o` - Disassembling an object file (Show .rodata section only)
+- `objdump -T --demangle /path/to/executable/file` - Demangle symbol table
+- `objdump -T /path/to/executable/file` - Display the dynamic symbol table
+- `objdump -t /path/to/executable/file` - Display the symbol table
+- `objdump -x /path/to/executable/file` - Display all headers
+- `objdump ls.ctor -s --section=.init_array`
 - `objdump -p /path/to/program | grep NEEDED` - Get list of the external libraries required by the ELF object
 - `objdump --disassemble ./test | grep 100002b0`
 - `objdump --disassemble-all ./hello`
 - `objdump --syms ./fuse.ko | grep modinfo`
 - `objdump -T lib.so` - View exported symbols
 - `objdump -T --demangle lib.so` - View export symbols and demangle those
-- `nm -D --demangle lib.so` - Use `nm` to demangle library symnbol
-- `hexdump -C /bin/ls`
 
+## strip
+- `strip --strip-all a.out` - Stripping an executable
+- `strip --strip-debug </path/to/input/lib/program> -o </path/to/output/file>` - Strip debug info
+
+## Misc compiler commands
+- `make kernelversion` - To see kernel version.
+- `size --common --totals <path/to/obj/file/or/path/to/executable>` - Show sizes of the each section
+    ```
+    aarch64-poky-linux-size --common --totals vmlinux
+    text	   data	    bss	    dec	    hex	filename
+    15036748	8039596	 441152	23517496	166d938	vmlinux
+    15036748	8039596	 441152	23517496	166d938	(TOTALS)
+    ```
+- `rm /etc/ld.so.cache && ldconfig` - Force the system to rebuild ld cache
+- `addr2line -f -e vmlinux 0xDEADBEAF` - Map address onto line in the source code
+- `<linux/source>/scripts/faddr2line vmlinux native_write_msr+0x6` - kernel secript to translate a stack dump function
+- `hexdump -C /bin/ls`
 - `LD_DEBUG=all /path/to/app` - Can be used to dump debug info generated by the Linux dynamic linker
 
     ```
@@ -222,5 +262,51 @@ IMAGE_ROOTFS_SIZE = "3806250"
 - `make linux-dirclean` - Clean build folder of the kernel
 - `make linux-rebuild` - Rebuild kernel
 - `make linux-menuconfig` - Run menuconfiq of the kernel
+- `make savedefconfig` - Save config of buildroot (`cp defconfig arch/arm/configs/my_cool_defconfig`)
 - `rm -rf </path/to/buildroot/folder>/output/build/linux-*` - Manually remove build artifact related to the kernel
 - `rm </path/to/buildroot/folder>/dl/linux-*` - Manually remove download files related to the kernel
+- Config files
+    ```text
+    linux-savedefconfig for linux
+    barebox-savedefconfig for barebox bootloader
+    uboot-savedefconfig for U-Boot bootloader
+    ```
+
+# Misc
+## Setup TFTP
+```bash
+sudo apt install -y atftpd
+sudo sed -i 's/USE_INETD=true/USE_INETD=false/' /etc/default/atftpd
+sudo systemctl start atftpd
+sudo systemctl enable atftpd
+```
+
+### Setup NFS
+```bash
+sudo apt install -y nfs-kernel-server
+sudo mkdir -p /srv/nfs
+sudo chmod -R 777 /srv/nfs
+
+sudo service nfs-kernel-server status
+```
+- edit `/etc/exports`
+```bash
+echo '/srv/nfs 192.168.0.200/24(rw,sync,no_subtree_check,no_root_squash)' | sudo tee -a /etc/exports
+echo '/srv/nfs *(rw,sync,no_subtree_check,no_root_squash)' | sudo tee -a /etc/exports
+```
+
+- Reload stuff
+```bash
+sudo exportfs -ra
+```
+
+- View NFS
+```bash
+sudo exportfs -v
+sudo rpcinfo -p
+```
+
+- To test
+```
+nfs://[hostname-or-ip-of-pi]/srv/nfs
+```

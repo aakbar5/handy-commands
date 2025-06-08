@@ -1,26 +1,24 @@
 # Ubuntu
+<!-- TOC -->
 
-- [General commands](#general)
-- [Loop devices](#loop_devices)
-- [rsync commands](#rsync)
-- [dd commands](#dd)
-- [cURL commands](#curl)
-- [Find commands](#find)
-- [Redirection](#redirection)
-- [Network](#network)
-- [Pandoc](#pandoc)
-- [VSCode](#vscode)
-- [PDF Manipluation](#pdf_manipulation)
-- [Audio Manipulation](#audio_manipulation)
-- [Video Manipulation](#video_manipulation)
-- [Image Manipulation](#image_manipulation)
+- [Ubuntu](#ubuntu)
+    - [General commands](#general-commands)
+    - [Loop devices](#loop-devices)
+    - [rsync commands](#rsync-commands)
+    - [dd commands](#dd-commands)
+    - [cURL commands](#curl-commands)
+    - [Find commands](#find-commands)
+    - [Redirection](#redirection)
+    - [Network](#network)
+    - [Pandoc](#pandoc)
+    - [VSCode](#vscode)
+    - [PDF Manipulation](#pdf-manipulation)
+    - [Audio Manipulation](#audio-manipulation)
+    - [Video Manipulation](#video-manipulation)
+    - [Trim a video file](#trim-a-video-file)
+    - [Image Manipulation](#image-manipulation)
 
-<a name="general"></a>
-## General commands
-
-- `dpkg --print-foreign-architectures` - Get foreign architecture
-- `dpkg --print-architecture` - Get native architecture
-- `cat /var/lib/dpkg/arch` - Available architecture
+<!-- /TOC -->ib/dpkg/arch` - Available architecture
 - `sudo add-apt-repository ppa:graphics-drivers/ppa` - Add a PPA to pull new packages
 - `sudo apt-add-repository --remove ppa:graphics-drivers/ppa` - Remove a PPA
 - `apt-rdepends -r python3-pip` - Show recursive dependency listings of the package
@@ -49,6 +47,11 @@ gsettings set org.gnome.desktop.media-handling automount false
 ```bash
 dpkg --list # Find package name
 sudo apt remove <package.name> # Remove package
+```
+
+- Find broken link in a directory
+```bash
+find . -type l ! -exec test -e {} \; -print
 ```
 
 <a name="loop_devices"></a>
@@ -408,6 +411,21 @@ ffmpeg -i old.mp3 -acodec libmp3lame -ac 2 -ab 64k -ar 44100 new-1.mp3
 <a name="video_manipulation"></a>
 ## Video Manipulation
 
+### Extract MP4 info
+```bash
+ffprobe -v quiet -print_format json -show_format -show_streams input.mp4
+
+ffprobe -i video.mp4 -show_frames 2>&1|grep -c '^\[FRAME'
+ffprobe -i video.mp4 -show_frames 2>&1 | grep -c media_type=video
+ffprobe -i h264cars_small.mp4 -show_frames 2>&1 | grep -c media_type=video
+ffprobe -select_streams v -show_streams video.mp4
+```
+
+## Trim a video file
+```
+ffmpeg -ss 00:00:00 -to 00:00:10  -i video.mp4 -c copy output.mp4
+```
+
 ### Convert MOV into MP4
 - MOV into MP4: `ffmpeg -i input.mov -codec copy output.mp4`
 - Convert codec from HEVC to H264: `ffmpeg -i input.mp4 -c:v libx264 output.mp4`
@@ -446,6 +464,10 @@ ffmpeg -i input.mp4 -c:v libx264 -crf 18 -c:a copy output.mp4
 + CRF @ https://slhck.info/video/2017/02/24/crf-guide.html
 + Play with it to see quality vs size
 
+- Change fps of the video
+```bash
+ffmpeg -y -r 30 -i input.mp4 output.mp4
+```
 
 - Change the resolution & bit rate
 ```bash
