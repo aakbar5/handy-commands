@@ -1,5 +1,5 @@
-# Ubuntu
-<!-- TOC -->
+
+<!-- TOC depthto:2 -->
 
 - [Ubuntu](#ubuntu)
     - [General commands](#general-commands)
@@ -15,10 +15,18 @@
     - [PDF Manipulation](#pdf-manipulation)
     - [Audio Manipulation](#audio-manipulation)
     - [Video Manipulation](#video-manipulation)
-    - [Trim a video file](#trim-a-video-file)
     - [Image Manipulation](#image-manipulation)
 
-<!-- /TOC -->ib/dpkg/arch` - Available architecture
+<!-- /TOC -->
+
+
+# Ubuntu
+
+## General commands
+
+- `dpkg --print-foreign-architectures` - Get foreign architecture
+- `dpkg --print-architecture` - Get native architecture
+- `cat /var/lib/dpkg/arch` - Available architecture
 - `sudo add-apt-repository ppa:graphics-drivers/ppa` - Add a PPA to pull new packages
 - `sudo apt-add-repository --remove ppa:graphics-drivers/ppa` - Remove a PPA
 - `apt-rdepends -r python3-pip` - Show recursive dependency listings of the package
@@ -52,6 +60,12 @@ sudo apt remove <package.name> # Remove package
 - Find broken link in a directory
 ```bash
 find . -type l ! -exec test -e {} \; -print
+```
+
+- `asciidoctor test.adoc` - Convert .adoc to HTML using asciidoctor
+- Monitor a file and print a message once it is being updated
+```bash
+while inotifywait -e close_write test.file; do echo "file is updated"; done
 ```
 
 <a name="loop_devices"></a>
@@ -421,7 +435,7 @@ ffprobe -i h264cars_small.mp4 -show_frames 2>&1 | grep -c media_type=video
 ffprobe -select_streams v -show_streams video.mp4
 ```
 
-## Trim a video file
+### Trim a video file
 ```
 ffmpeg -ss 00:00:00 -to 00:00:10  -i video.mp4 -c copy output.mp4
 ```

@@ -19,6 +19,8 @@
     - [Images](#images)
     - [Misc commands](#misc-commands)
 - [Buildroot](#buildroot)
+- [Misc](#misc)
+    - [Setup TFTP](#setup-tftp)
 
 <!-- /TOC -->
 
@@ -200,13 +202,13 @@
 - Add features using `bbappend`
 
 Enable features:
-```
+```bash
 PACKAGECONFIG ?= "feature1"
 PACKAGECONFIG += "feature2"
 ```
 
 Pass different options as per new features:
-```
+```bash
 PACKAGECONFIG[feature1] = "--enable-feature1,--disable-feature1,dependencies"
 PACKAGECONFIG[feature2] = "--enable-feature2,--disable-feature2,dependencies
 ```
@@ -214,7 +216,7 @@ PACKAGECONFIG[feature2] = "--enable-feature2,--disable-feature2,dependencies
 ### Pass build flags
 
 - Pass new flags to build:
-```
+```bash
 EXTRA_OECMAKE += " -DENABLE_MODULE_1=1 -DEXTRA_FLAGS=1"
 ```
 
@@ -263,6 +265,8 @@ IMAGE_ROOTFS_SIZE = "3806250"
 - `make linux-rebuild` - Rebuild kernel
 - `make linux-menuconfig` - Run menuconfiq of the kernel
 - `make savedefconfig` - Save config of buildroot (`cp defconfig arch/arm/configs/my_cool_defconfig`)
+    - `make savedefconfig BR2_DEFCONFIG=<path-to-defconfig>`
+    
 - `rm -rf </path/to/buildroot/folder>/output/build/linux-*` - Manually remove build artifact related to the kernel
 - `rm </path/to/buildroot/folder>/dl/linux-*` - Manually remove download files related to the kernel
 - Config files
@@ -307,6 +311,6 @@ sudo rpcinfo -p
 ```
 
 - To test
-```
+```bash
 nfs://[hostname-or-ip-of-pi]/srv/nfs
 ```
