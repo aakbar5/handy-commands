@@ -11,18 +11,25 @@
     - [objdump](#objdump)
     - [strip](#strip)
     - [Misc compiler commands](#misc-compiler-commands)
-    - [Misc](#misc)
+    - [udev](#udev)
+    - [Kernel config](#kernel-config)
+    - [DRM](#drm)
 - [Yocto](#yocto)
     - [Recipes](#recipes)
     - [bbappend](#bbappend)
+        - [Enable new feature](#enable-new-feature)
+        - [Pass build flags](#pass-build-flags)
     - [Layers](#layers)
     - [Images](#images)
     - [Misc commands](#misc-commands)
+        - [Find out toolchain used by the Yocto](#find-out-toolchain-used-by-the-yocto)
+        - [Expand disk size](#expand-disk-size)
 - [Buildroot](#buildroot)
-- [Misc](#misc)
-    - [Setup TFTP](#setup-tftp)
+- [TFTP](#tftp)
+- [NFS](#nfs)
 
 <!-- /TOC -->
+
 
 # Linux
 
@@ -39,12 +46,11 @@
 - `make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- modules- `
 - `sudo make ARCH=arm64 INSTALL_MOD_PATH=<path to root of file system> modules_install`
  - `INSTALL_MOD_STRIP=1` - Pass it on to strip down debug info from the kernel module
-
+- `make kernelversion` - To see kernel version.
 
 ## Device Tree
 - [Convert DTS to DTB](https://gist.github.com/aakbar5/60e432b4e16843bef8656de88ab1e1b7)
 - [Convert DTB to DTS](https://gist.github.com/aakbar5/60e432b4e16843bef8656de88ab1e1b7)
-
 
 ## GCC commands
 - Add `-P -E` to gcc commandline to generate pre-process code for inspection
@@ -56,7 +62,6 @@
 - `gcc -Q --help=warning | sed -e 's/^\s*\(\-\S*\)\s*\[\w*\]/\1 /gp;d' | tr -d '\n'` - Make one long string of the compiler options
 - `gcc -Q --help=warning` - Show enable/disable state of compiler warning flags
 - `gcc -Wall -Wextra -Q --help=warning` - Show enable/disable state of compiler warning flags on using `-Wall -Wextra`
-
 
 ## readelf
 - `readelf --relocs compilation_example.o` - Relocation symbols as shown by readelf
@@ -121,7 +126,6 @@
 - `strip --strip-debug </path/to/input/lib/program> -o </path/to/output/file>` - Strip debug info
 
 ## Misc compiler commands
-- `make kernelversion` - To see kernel version.
 - `size --common --totals <path/to/obj/file/or/path/to/executable>` - Show sizes of the each section
     ```
     aarch64-poky-linux-size --common --totals vmlinux
@@ -151,16 +155,16 @@
     ```
     Ref: http://schillix.sourceforge.net/man/man1/ld.so.1.1.html
 
-
-## Misc
-
+## udev
 - `udevadm control --reload-rules && udevadm trigger` - For udev to reload rules
     - https://marc.info/?l=linux-usb&m=121459435621262&w=2
 
+## Kernel config
 - Verify config of the running kernel
 	- Dump config: `cat /proc/config.gz | gunzip > active_config.config` or `zcat /proc/config.gz > active_config.config`
     - Needs kernel support for this: `General setup > Kernel .config support > Enable access to .config through /proc/config.gz`.
 
+## DRM
 - DRM manipulation via commandline
     - Chanage debug level
         - `cat /sys/module/drm/parameters/debug`
@@ -178,6 +182,7 @@
         - `cat /sys/kernel/debug/dri/0/state`
 
 # Yocto
+
 ## Recipes
 
 - `bitbake <package-name_OR_recipe_name> -c listtasks` - Show tasks associated for a specific package/recipe.
@@ -202,13 +207,13 @@
 ### Enable new feature
 - Add features using `bbappend`
 
-Enable features:
+- Enable features:
 ```bash
 PACKAGECONFIG ?= "feature1"
 PACKAGECONFIG += "feature2"
 ```
 
-Pass different options as per new features:
+- Pass different options as per new features:
 ```bash
 PACKAGECONFIG[feature1] = "--enable-feature1,--disable-feature1,dependencies"
 PACKAGECONFIG[feature2] = "--enable-feature2,--disable-feature2,dependencies
@@ -277,8 +282,7 @@ IMAGE_ROOTFS_SIZE = "3806250"
     uboot-savedefconfig for U-Boot bootloader
     ```
 
-# Misc
-## Setup TFTP
+# TFTP
 ```bash
 sudo apt install -y atftpd
 sudo sed -i 's/USE_INETD=true/USE_INETD=false/' /etc/default/atftpd
@@ -286,7 +290,7 @@ sudo systemctl start atftpd
 sudo systemctl enable atftpd
 ```
 
-### Setup NFS
+# NFS
 ```bash
 sudo apt install -y nfs-kernel-server
 sudo mkdir -p /srv/nfs
@@ -315,3 +319,7 @@ sudo rpcinfo -p
 ```bash
 nfs://[hostname-or-ip-of-pi]/srv/nfs
 ```
+
+# Misc
+
+- `taskset -pa <cpu-mask-in-hexadecimal> pidof com.asad` - set cpu affinity

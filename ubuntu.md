@@ -12,10 +12,12 @@
     - [Network](#network)
     - [Pandoc](#pandoc)
     - [VSCode](#vscode)
+    - [Sublime](#sublime)
     - [PDF Manipulation](#pdf-manipulation)
     - [Audio Manipulation](#audio-manipulation)
     - [Video Manipulation](#video-manipulation)
     - [Image Manipulation](#image-manipulation)
+    - [Tar](#tar)
 
 <!-- /TOC -->
 
@@ -67,6 +69,24 @@ find . -type l ! -exec test -e {} \; -print
 ```bash
 while inotifywait -e close_write test.file; do echo "file is updated"; done
 ```
+
+- Mount Windows based network drive to Ubuntu
+```bash
+sudo mount -t cifs //windows.network.drive/folder ~/network_drives/folder -o user=hello,domain=corp
+```
+  - Ubuntu packages: `sudo apt-get install cifs-utils nfs-common samba`
+
+- SSH to machine with port forwarding
+```bash
+ssh -o ServerAliveInterval=30 -R 5037:127.0.0.1:5037 -R 27183:127.0.0.1:27183 user@1.1.1.1
+```
+
+- Mount FileSystem over SSH
+```bash
+sudo addgroup <username> fuse
+sshfs -o allow_other user@1.1.1.1:/folder ~/folder
+```
+
 
 <a name="loop_devices"></a>
 ## Loop devices
@@ -333,6 +353,36 @@ code --list-extensions > extensions.list
 cat vscode-extensions.list | xargs -L 1 code --install-extension
 ```
 
+- Exclude/hide folders/files via `.vscode/settings.json`
+```javascript
+{
+  "files.exclude": {
+    "**/.git": true,
+  },
+  "search.exclude": {
+    "**/.git": true,
+  },
+  "files.watcherExclude": {
+    "**/.git": true,
+  }
+}
+```
+
+
+<a name="sublime"></a>
+## Sublime
+
+- remove text after `=`
+```bash
+find: ^([^=]*)=.*$
+replace=\1
+```
+
+- Remove text before a token (hello): `^.*hello:`
+
+- Regular expression to find two or more empty lines: - `^(?:[\t ]*(?:\r?\n\n|\r))+`
+
+
 <a name="pdf_manipulation"></a>
 ## PDF Manipulation
 
@@ -584,4 +634,14 @@ https://legacy.imagemagick.org/Usage/color_mods/
 ### PNGs to GIF
 ```bash
 convert -delay 25 -loop 0 *.png test.gif
+```
+
+
+<a name="tar"></a>
+## Tar
+
+```bash
+tar -czvf archive.tgz *.pdf
+tar -czvf projects.tar.gz $HOME/projects/
+tar -xzvf projects.tar.gz -C /tmp/
 ```
