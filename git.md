@@ -11,8 +11,10 @@
 - [Repo cleanup](#cleanup)
 - [Misc](#misc)
 
+
 <a name="repo_config"></a>
 ## Repo config
+
 - `git config --list` - Show configuration
 - `git config --list --local` - Show configuration of the local repo
 - `git config --list --show-origin` - Show configuration and the config file setting up
@@ -43,6 +45,7 @@ git -c http.sslVerify=false
 
 <a name="log_viewing"></a>
 ## Log viewing
+
 - Simple view
 `git log --graph --decorate --abbrev-commit --pretty=oneline`
 ![git_simple_log](resources/git_simple_log.png)
@@ -53,6 +56,7 @@ git -c http.sslVerify=false
 
 <a name="tags"></a>
 ## Tags
+
 - `git tag <tag_name>` - Create a tag
 - `git tag -d <tag_name>` - Delete a tag
 - `git tag -l | sort -V` - See tags in the sort order
@@ -73,6 +77,9 @@ git push origin :refs/tags/<old_tag_name>
 - `git branch -d {the_local_branch}` - Remove branch locally
 - `git push origin --delete {the_remote_branch}` - Remove remote branch
 - `git checkout --orphan newbranch` - Create a branch in a old repo without history
+- `git branch branch_name --set-upstream-to <remote_name/branch_name>` - To set remote of a branch
+- `git push --set-upstream <remote_name> <branch_name>` - Push and track a remote branch
+- `git branch --unset-upstream <branch_name>` - To remove upstream tracking of a branch
 
 <a name="remote_tracking"></a>
 ## Remote tracking
@@ -87,77 +94,20 @@ git push origin :refs/tags/<old_tag_name>
     git remote show origin
     ```
 
-- List all currently configured remotes
-```bash
-git remote -v
-```
-
-- To set remote of a repository
-```bash
-git remote add <remote_name> <url>
-```
-
-- To remove a remote
-```bash
-git remote rm <remote_name>
-```
-
-- To set/change URL for a remote
-```bash
-git remote set-url origin <url>
-```
-
-- To set remote of a branch
-```bash
-git branch branch_name --set-upstream-to <remote_name/branch_name>
-```
-
-- Push and track a remote branch
-```bash
-git push --set-upstream <remote_name> <branch_name>
-```
-
-- To remove upstream tracking of a branch
-```bash
-git branch --unset-upstream <branch_name>
-```
-
-- Show information about a remote
-```bash
-git remote show <remote>
-```
-
-- Download all changes from remote but don't merged into HEAD
-```bash
-git fetch <remote>
-```
-
-- Re-sync git to remove dead remote tracking and tags
-```bash
-git fetch --all --prune --prune-tags
-```
-
+- `git remote -v` - List all currently configured remotes
+- `git remote add <remote_name> <url>` - To set remote of a repository
+- `git remote rm <remote_name>` - To remove a remote
+- `git remote set-url origin <url>` - To set/change URL for a remote
+- `git remote show <remote>` - Show information about a remote
+- `git fetch <remote>` - Download all changes from remote but don't merged into HEAD
+- `git fetch --all --prune --prune-tags` - Re-sync git to remove dead remote tracking and tags
   - The `--prune` option tells Git to remove all remote-tracking references.
 
-- Download changes and merge/integrated into HEAD
-```bash
-git pull <remote> <branch>
-```
+- `git pull <remote> <branch>` - Download changes and merge/integrated into HEAD
+- `git push <remote> <branch>` - Push local commits to remote
+- `git push origin <commit_id_has>:master` - Push a specific commit id to remote
+- `git push --all` - Push everything
 
-- Push local commits to remote
-```bash
-git push <remote> <branch>
-```
-
-- Push a specific commit id to remote
-```bash
-git push origin <commit_id_has>:master
-```
-
-- Push everything
-```bash
-git push --all
-```
 - chmod changes
 ```bash
 git diff --summary | grep 'mode change 100755 => 100644' | cut -d' ' -f7- | xargs --no-run-if-empty -d'\n' chmod +x
@@ -166,6 +116,7 @@ git diff --summary | grep 'mode change 100644 => 100755' | cut -d' ' -f7- | xarg
 
 <a name="stash"></a>
 ## Stash
+
 Temporarily saves changes of half-done work.
 
 - `git stash` - Temporarily stores all modified tracked files
@@ -332,28 +283,16 @@ git gc --aggressive --prune=now
 <a name="misc"></a>
 ## Misc
 
-- Count number of commits b/w two commits
-```bash
-git log starthash..endhash --pretty=oneline | wc -l
-```
-
-- List un-tracked files
-```bash
-git ls-files . --exclude-standard --others
-```
-
-- List ignored files
-```bash
-git ls-files --exclude-standard --others --ignored
-```
-
-- List ignored files in a specific directory
-```bash
-git ls-files --exclude-standard --others --ignored --directory </path/to/directory>
-```
+- `git log --all -- '**/target_file.txt'` - Search a file in git
+- `git commit --amend --date="now"` - Change date of the commit
+- `git diff --patch 123456abcedfs HEAD > mypatch.patch` - Convert a commit to patch
+- `git reset --soft HEAD~1` - Unstage files
+- `git log starthash..endhash --pretty=oneline | wc -l` - Count number of commits b/w two commits
+- `git ls-files . --exclude-standard --others` - List un-tracked files
+- `git ls-files --exclude-standard --others --ignored` - List ignored files
+- `git ls-files --exclude-standard --others --ignored --directory </path/to/directory>` - List ignored files in a specific directory
 
 - Remove a file from history (Becareful: It will change git hash values.)
-
 ```bash
 git filter-branch -f --index-filter "git rm -rf --cached --ignore-unmatch path/to/file-or-folder/to/be/removed" HEAD
 
@@ -365,6 +304,7 @@ git for-each-ref --format='delete %(refname)' refs/original | git update-ref --s
 git reflog expire --expire=now --all
 git gc --prune=now
 ```
+
 - Revert to a commit in the history
 `git reflog` - Find your commit
 `git reset HEAD@{1}` - Revert to the commit assuming it is HEAD@{1}.
@@ -398,4 +338,10 @@ git remote add upstream </path/to/original/repo>
 git remote -v
 git fetch upstream
 git merge upstream/branch-name
+```
+
+- Search branch using commit
+```bash
+git branch --contains <commit-hash>
+git for-each-ref --contains <commit-hash>
 ```
