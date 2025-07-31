@@ -345,3 +345,5 @@ git merge upstream/branch-name
 git branch --contains <commit-hash>
 git for-each-ref --contains <commit-hash>
 ```
+
+- `git log -S'string_to_search' -- file` - Search commit having using text 
