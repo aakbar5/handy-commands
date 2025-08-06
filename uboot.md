@@ -96,6 +96,8 @@ MMC
 
 <a name="env_variables"></a>
 ## Environment Variables Commands
+- `setenv var value` - Set/update a variable
+- `setenv var` - Delete a variable
 - `printenv` - Print env variables
 - `saveenv` - Save env variables to storage
 - `run` - Run commands in an env variable
