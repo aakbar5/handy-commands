@@ -6,6 +6,7 @@
 - [Comments](#comments)
 - [Echo](#echo)
 - [Special variables](#special-variables)
+- [Flags](#flags)
 - [Sleep](#sleep)
 - [Variables](#variables)
 - [Arrays](#arrays)
@@ -26,6 +27,7 @@
 - [Global and local variables](#global-and-local-variables)
 - [Argument handling](#argument-handling)
 - [Read a file](#read-a-file)
+- [IFS Internal Field Separator](#ifs-internal-field-separator)
 
 <!-- /TOC -->
 
@@ -78,6 +80,24 @@ echo -e "Hello\tworld!"
 - `$SECONDS` - The number of seconds since the script was started
 - `$RANDOM` - Returns a different random number each time is it referred to
 - `$LINENO` - Current line number of the script
+
+
+# Flags
+Following are the special flags which can be used at the top of the file bash script.
+
+- `set -e` or `set -o errexit`
+  - Exit immediately on having any command which ends with non-zero exit status.
+
+- `set -x` or `set -o xtrace`
+  - Print every command prior to execution
+
+- `set -u` or `set -o nounset`
+  - Treat unset variable & parameters as errors (except `$*` and `$@`)
+
+- `set -o pipefail`:
+  - By default, a pipeline's exit status is determined by the last command. It does matter earlier command in pipeline is failed or not.
+  - For example `cat nonexistent_file | grep "foo"` will show `0 (Success)` on using `echo $?`.
+  - However if `set -o pipefail` is used `echo $?` will show `1 (Failure)`.
 
 
 # Sleep
@@ -1214,6 +1234,7 @@ fund
   - If `:` is not found at the start of the argument list, `getopts` does not perform any error checking. Otherwise error will be reported on having unkown option or paramter.
   - `getopts` does not handle long options (`--long`). `getopt` can do the job however it is not built-in functionality of the Bourne shell.
 
+
 # Read a file
 ```bash
 FILE='test.txt'
@@ -1221,3 +1242,31 @@ while read LINE; do
   echo $LINE
 done < $FILE
 ```
+
+
+# IFS (Internal Field Separator)
+By default, Bash uses space, tab and newline characters act as word boundaries for words splitting however IFS allows the control over to customize this behaviour.
+
+For example
+
+```bash
+items="a,b,c"
+for x in ${items[@]}; do
+  echo "$x"
+done
+```
+
+> a,b,c
+
+The output is fine as `,` is not being treated as word separator. In order to use `,` as word separator, we have to use IFS.
+
+```bash
+IFS=$","
+for x in ${items[@]}; do
+  echo "$x"
+done
+```
+
+> a \
+b \
+c
