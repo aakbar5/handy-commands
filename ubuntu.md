@@ -439,6 +439,11 @@ ffmpeg -i input.mp4 -vn -acodec copy audio.aac
 ffmpeg -i input.mp4 -vn -f mp3 output.mp3
 ```
 
+- Convert all mp4 files in the current folder to mp3. Following command will handle file having spaces in their name. 
+```bash
+IFS=$'\n';for f in `find . -name "*.mp4"`; do echo \"$(basename $f)\";ffmpeg -i "$f" -vn -f mp3 "${f%.*}".mp3;done
+```
+
 ### Audio track + picture = video
 - Convert mp3 file to audio with a picture
 ```bash

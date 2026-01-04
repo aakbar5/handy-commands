@@ -104,6 +104,18 @@ echo "--foo removeit -abc this_one_too" | sed -e 's/^/ /g' -e 's/ [^-][^ ]*//g' 
 
 # grep
 
+- Find trailing space - `grep -n '[[:blank:]]\+$' foo.txt`
+- Find tabs - `grep -nP '\t' foo.txt`
+- Find consecutive empty lines - `grep -P -n '\n\s*\n' foo.txt`
+
+- Strip trailing spaces
+```bash
+find . -type f \( -name "*.c" -o -name "*.cpp" -o -name "*.h" \) -print0 |
+while IFS= read -r -d '' file; do
+  sed -i 's/[[:space:]]\+$//' "$file"
+done
+```
+
 - Searches input stream that contain any of the `foo`, `bar`, `baz` is available
 ```bash
 somecommand | grep -e foo -e bar -e baz
@@ -133,7 +145,7 @@ sys		0m1.026s
 ```
 
 ```bash
-time LC_ALL=C grep "food" a_very_large_file.txt
+time LC_ALL=C grep "foo" a_very_large_file.txt
 real	0m0.127s
 user	0m0.018s
 sys		0m0.109s
