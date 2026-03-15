@@ -11,22 +11,20 @@
     - [objdump](#objdump)
     - [strip](#strip)
     - [Misc compiler commands](#misc-compiler-commands)
+    - [ldconfig](#ldconfig)
     - [udev](#udev)
     - [Kernel config](#kernel-config)
     - [DRM](#drm)
 - [Yocto](#yocto)
     - [Recipes](#recipes)
     - [bbappend](#bbappend)
-        - [Enable new feature](#enable-new-feature)
-        - [Pass build flags](#pass-build-flags)
     - [Layers](#layers)
     - [Images](#images)
     - [Misc commands](#misc-commands)
-        - [Find out toolchain used by the Yocto](#find-out-toolchain-used-by-the-yocto)
-        - [Expand disk size](#expand-disk-size)
 - [Buildroot](#buildroot)
 - [TFTP](#tftp)
 - [NFS](#nfs)
+- [Misc](#misc)
 
 <!-- /TOC -->
 
@@ -69,6 +67,7 @@
 - `readelf --syms a.out` - Symbols in the a.out binary as shown by readelf
 - `readelf -h a.out` - Executable header as shown by readelf
 - `readelf -h elf_header` - The readelf output for the extracted ELF header
+- `readelf -h | grep Entry` - Find the entry point of the program
 - `readelf -p .interp a.out` - Contents of the .interp section
 - `readelf -s libhello.so` - Read constants string
 - `readelf --wide --syms </path/to/.so/file/or/executable/file>` - See all symbols of a .so file
@@ -83,6 +82,17 @@
 - `readelf --headers app | grep 'Entry point'` - Show entry point address
 - `readelf --relocs app` - Show relocation sections of the app
 - `readelf --segments app` - Show segment headers
+- `readelf --symbols` - List symbols
+- `readelf --dyn-syms` - List symbols
+- `readelf -S` - Show available sections
+- `readelf -x <section name> <path-to-binary>` - Examine a section
+- `readelf -d <path-to-binary>` - Examine the dynamic section
+- `readelf -r <path-to-binary>` - Examine a relocation section
+- `readelf --debug-dump=line <path-to-binary>` - Identify the debug build
+- Determining whether dynamic library is PIC or LTR
+```bash
+readelf -d "$1" | grep -q TEXTREL && echo "LTR (no -fPIC)" || echo "Built with -fPIC"
+```
 
 ## nm
 - `nm -gDC libhello.so > libhello.symbols` - Extract symbols from the library
@@ -99,33 +109,39 @@
 - `strings -a -t d libhello.so | c++filt`
 
 ## objdump
+- `objdump --disassemble ./test | grep 100002b0`
+- `objdump --disassemble-all ./hello`
+- `objdump --syms ./fuse.ko | grep modinfo`
 - `objdump -dM intel /path/to/executable/file` - (`-d` - Disassebmle executable sections), (`-M` - Intel specific syntax)
 - `objdump -DM intel /path/to/executable/file` - Disassemble all
 - `objdump -f /path/to/executable/file` - Display file headers
+- `objdump -f | grep start` - Find the entry point of the program
 - `objdump -g /path/to/executable/file` - Display debug information
 - `objdump -h /path/to/executable/file` - Display section headers
 - `objdump -M intel -d a.out` - Disassembling an executable with objdump
 - `objdump -p /path/to/executable/file` - Show information that is specific to the object file format
+- `objdump -p /path/to/program | grep NEEDED` - Get list of the external libraries required by the ELF object
 - `objdump -R /path/to/executable/file` - Display the dynamic relocation table
 - `objdump -s /path/to/executable/file` - Display full contents of any sections
 - `objdump -sj .rodata compilation_example.o` - Disassembling an object file (Show .rodata section only)
 - `objdump -T --demangle /path/to/executable/file` - Demangle symbol table
+- `objdump -T --demangle lib.so` - View export symbols and demangle those
 - `objdump -T /path/to/executable/file` - Display the dynamic symbol table
 - `objdump -t /path/to/executable/file` - Display the symbol table
+- `objdump -T lib.so` - View exported symbols
 - `objdump -x /path/to/executable/file` - Display all headers
 - `objdump ls.ctor -s --section=.init_array`
-- `objdump -p /path/to/program | grep NEEDED` - Get list of the external libraries required by the ELF object
-- `objdump --disassemble ./test | grep 100002b0`
-- `objdump --disassemble-all ./hello`
-- `objdump --syms ./fuse.ko | grep modinfo`
-- `objdump -T lib.so` - View exported symbols
-- `objdump -T --demangle lib.so` - View export symbols and demangle those
+- `objdump -s -j <section name> <path-to-binary>` - Examine a section
+- `objdump -p <path-to-binary>` - Examine a dynamic section
+- `objdump -R <path-to-binary>` - Examine a relocation section
 
 ## strip
 - `strip --strip-all a.out` - Stripping an executable
 - `strip --strip-debug </path/to/input/lib/program> -o </path/to/output/file>` - Strip debug info
 
 ## Misc compiler commands
+- `lddtree `which app` | unnix | nl` - see required libs tee
+- `patchelf --print-needed 'which app' | nl` - using patchelf to required libs
 - `size --common --totals <path/to/obj/file/or/path/to/executable>` - Show sizes of the each section
     ```
     aarch64-poky-linux-size --common --totals vmlinux
@@ -154,6 +170,11 @@
     help        display this help message and exit
     ```
     Ref: http://schillix.sourceforge.net/man/man1/ld.so.1.1.html
+
+## ldconfig
+- `ldconfig -p` - List the libraries known to the Loader
+- `ldconfig -p | grep <library-of-interest>` - Check a specific library
+
 
 ## udev
 - `udevadm control --reload-rules && udevadm trigger` - For udev to reload rules
